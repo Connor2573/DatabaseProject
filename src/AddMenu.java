@@ -79,6 +79,29 @@ public class AddMenu {
 		return attributes[0];
 	}
 	
+	public String getGenre() {
+		return attributes[1];
+	}
+	
+	public int getYear() {
+		return Integer.parseInt(attributes[2]);
+	}
+	
+	public int getLength() {
+		return Integer.parseInt(attributes[3]);
+	}
+	
+	public String getType() {
+		return attributes[4];
+	}
+	
+	public String getLocation() {
+		return attributes[5];
+	}
+	
+	public String getCR() {
+		return attributes[6];
+	}
 	//needs implementation of other return types
 }
 
