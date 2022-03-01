@@ -35,10 +35,12 @@ public class Core {
 		JButton update = new JButton("Update");
 		JButton addButton = new JButton("Add New Media");
 		JButton edit = new JButton("Edit selected Media");
+		JButton order = new JButton("Start Order");
 		
 		addPanel.add(addButton);
 		addPanel.add(update);
 		addPanel.add(edit);
+		addPanel.add(order);
 		
 		searchPanel.add(search);
 		searchPanel.add(finalS);
