@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -18,9 +19,40 @@ public class AddMenu {
 	
 
 	private String[] attributes = new String[7];
+	private boolean EditMode = false;
 	private boolean done = false;
+	private MediaType type;
 	
-	public AddMenu(MediaType mt, JFrame frame) {
+	public AddMenu(JFrame frame) {
+		String[] defaults = {"Name", "Genre", "2022", "#", "Type", "Location", "CR"};
+		MakeMenu(frame, defaults);
+	}
+	public AddMenu(JFrame frame, String[] defaults) {
+		EditMode = true;
+		MakeMenu(frame, defaults);
+	}
+	
+	private void MakeMenu(JFrame frame, String[] defaults) {
+		   MediaType[] mts = MediaType.values();
+		   
+		   String[] options = new String[mts.length+1];
+		   int index = 0;
+		   for(MediaType mt: mts) {
+			   options[index] = mt.toString();
+			   index++;
+		   }
+		   String getMediaType = (String) JOptionPane.showInputDialog(
+	                null,
+	                "Which type of item do you want to add?",
+	                "Choose item type",
+	                JOptionPane.QUESTION_MESSAGE,
+	                null,
+	                options,
+	                options[3]);
+		   
+		   MediaType mt = MediaType.valueOf(getMediaType.toUpperCase());
+		   type = mt;
+		   
 		JFrame addFrame = new JFrame("Adding");
 	       addFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	       addFrame.setLayout(new BoxLayout(addFrame.getContentPane(), BoxLayout.Y_AXIS));
@@ -36,13 +68,13 @@ public class AddMenu {
 	       JPanel crPanel = new JPanel();
 	       JPanel donePanel = new JPanel();
 	       
-	       JTextField nameText = new JTextField("Name", 8);
-	       JTextField genreText = new JTextField("Genre", 8);
-	       JTextField yearText = new JTextField("2022", 4);
-	       JTextField lengthText = new JTextField("0", 4);
-	       JTextField typeText = new JTextField("Type", 8);
-	       JTextField locationText = new JTextField("Location", 8);
-	       JTextField crText = new JTextField("Content Rating");
+	       JTextField nameText = new JTextField(defaults[0], 8);
+	       JTextField genreText = new JTextField(defaults[1], 8);
+	       JTextField yearText = new JTextField(defaults[2], 4);
+	       JTextField lengthText = new JTextField(defaults[3], 4);
+	       JTextField typeText = new JTextField(defaults[4], 8);
+	       JTextField locationText = new JTextField(defaults[5], 8);
+	       JTextField crText = new JTextField(defaults[6]);
 	       JButton doneButton = new JButton("Done");
 	       
 	       namePanel.add(nameText);
@@ -61,7 +93,7 @@ public class AddMenu {
 	       
 	       if(mt == MediaType.MOVIE || mt == MediaType.TRACK) {
 	    	   crPanel.add(crText);
-	    	   addFrame.add(crPanel);
+	    	   mainPanel.add(crPanel);
 	       }
 	       
 	       doneButton.addActionListener(new ActionListener() {
@@ -100,7 +132,7 @@ public class AddMenu {
 	       
 	       addFrame.getContentPane().add(mainPanel);
 	       addFrame.setVisible(true); 
-	   }
+	}
 	
 	private String getName() {
 		return attributes[0];
@@ -128,6 +160,10 @@ public class AddMenu {
 	
 	private String getCR() {
 		return attributes[6];
+	}
+	
+	private MediaType getMediaType() {
+		return type;
 	}
 	
 	public boolean isDone() {
