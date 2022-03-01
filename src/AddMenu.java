@@ -1,3 +1,4 @@
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -7,13 +8,19 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import media.Album;
+import media.Book;
+import media.Movie;
+import media.Track;
+
 
 public class AddMenu {
 	
 
 	private String[] attributes = new String[7];
+	private boolean done = false;
 	
-	public AddMenu(String getMediaType) {
+	public AddMenu(MediaType mt, JFrame frame) {
 		JFrame addFrame = new JFrame("Adding");
 	       addFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	       addFrame.setLayout(new BoxLayout(addFrame.getContentPane(), BoxLayout.Y_AXIS));
@@ -32,7 +39,7 @@ public class AddMenu {
 	       JTextField nameText = new JTextField("Name", 8);
 	       JTextField genreText = new JTextField("Genre", 8);
 	       JTextField yearText = new JTextField("2022", 4);
-	       JTextField lengthText = new JTextField("# in seconds", 4);
+	       JTextField lengthText = new JTextField("0", 4);
 	       JTextField typeText = new JTextField("Type", 8);
 	       JTextField locationText = new JTextField("Location", 8);
 	       JTextField crText = new JTextField("Content Rating");
@@ -52,7 +59,7 @@ public class AddMenu {
 	       mainPanel.add(typePanel);
 	       mainPanel.add(locationPanel);
 	       
-	       if(getMediaType.equals(MediaType.MOVIE.toString()) || getMediaType.equals(MediaType.TRACK.toString())) {
+	       if(mt == MediaType.MOVIE || mt == MediaType.TRACK) {
 	    	   crPanel.add(crText);
 	    	   addFrame.add(crPanel);
 	       }
@@ -67,41 +74,64 @@ public class AddMenu {
 	    		   attributes[4] = typeText.getText();
 	    		   attributes[5] = locationText.getText();
 	    		   attributes[6] = crText.getText();
+	    		   
+	    		   switch(mt) {
+	    		   case BOOK:
+	    			   Core.media.Add(new Book(getName(), getGenre(), getYear(), getLength(), getType(), getLocation()));
+	    			   break;
+	    		   case MOVIE:
+	    			   Core.media.Add(new Movie(getName(), getGenre(), getYear(), getLength(), getType(), getLocation(), getCR()));
+	    			   break;
+	    		   case TRACK:
+	    			   Core.media.Add(new Track(getName(), getGenre(), getYear(), getLength(), getType(), getLocation(), getCR()));
+	    			   break;
+	    		   case ALBUM:
+	    			   Core.media.Add(new Album(getName(), getGenre(), getYear(), getLength(), getType(), getLocation()));
+	    			   break; 
+	    		   }
+	    		   addFrame.dispose();
+	    		   done = true;
+	    		   frame.setVisible(true);
 	    	   }
 	       });
+	       donePanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 	       donePanel.add(doneButton);
+	       mainPanel.add(doneButton);
 	       
 	       addFrame.getContentPane().add(mainPanel);
 	       addFrame.setVisible(true); 
 	   }
 	
-	public String getName() {
+	private String getName() {
 		return attributes[0];
 	}
 	
-	public String getGenre() {
+	private String getGenre() {
 		return attributes[1];
 	}
 	
-	public int getYear() {
+	private int getYear() {
 		return Integer.parseInt(attributes[2]);
 	}
 	
-	public int getLength() {
+	private int getLength() {
 		return Integer.parseInt(attributes[3]);
 	}
 	
-	public String getType() {
+	private String getType() {
 		return attributes[4];
 	}
 	
-	public String getLocation() {
+	private String getLocation() {
 		return attributes[5];
 	}
 	
-	public String getCR() {
+	private String getCR() {
 		return attributes[6];
 	}
-	//needs implementation of other return types
+	
+	public boolean isDone() {
+		return done;
+	}
 }
 
