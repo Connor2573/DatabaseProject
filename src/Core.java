@@ -13,6 +13,8 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
+import media.MediaItem;
+
 public class Core {
 	
 	public static MediaCollection media;
@@ -28,15 +30,18 @@ public class Core {
 		JPanel searchPanel = new JPanel();
 		JPanel addPanel = new JPanel();
 		   
-		JTextField search = new JTextField("Entry", 4);
+		JTextField search = new JTextField("Entry", 8);
 		JButton finalS = new JButton("Search");
 		JButton update = new JButton("Update");
 		JButton addButton = new JButton("Add New Media");
 		JButton orderButton = new JButton("Order Media");
-		  
+		JButton edit = new JButton("Edit selected Media");
+    
 		addPanel.add(addButton);
 		addPanel.add(orderButton);
 		addPanel.add(update);
+		addPanel.add(edit);
+		
 		searchPanel.add(search);
 		searchPanel.add(finalS);
 		   
@@ -47,26 +52,16 @@ public class Core {
 			   @Override
 			   public void actionPerformed(ActionEvent e) {
 				   frame.setVisible(false);
-				   MediaType[] mts = MediaType.values();
 				   
-				   String[] options = new String[mts.length+1];
-				   int index = 0;
-				   for(MediaType mt: mts) {
-					   options[index] = mt.toString();
-					   index++;
-				   }
-				   String getMediaType = (String) JOptionPane.showInputDialog(
-			                null,
-			                "Which type of item do you want to add?",
-			                "Choose item type",
-			                JOptionPane.QUESTION_MESSAGE,
-			                null,
-			                options,
-			                options[3]);
+				   AddMenu am = new AddMenu(frame);
+			   }
+		   });
+		   orderButton.addActionListener(new ActionListener() {
+			   @Override
+			   public void actionPerformed(ActionEvent e) {
+				   frame.setVisible(false);
 				   
-				   MediaType mt = MediaType.valueOf(getMediaType.toUpperCase());
-				   
-				   AddMenu am = new AddMenu(mt, frame);
+				   OrderMenu am = new OrderMenu(frame);
 			   }
 		   });
 		   
@@ -97,7 +92,7 @@ public class Core {
 			   }
 		   });
 		   
-		String[] columnNames = {"Name", "Genre", "Year", "Length", "Type", "Location", "Content Rating", "Quantity"};
+		String[] columnNames = {"Name", "Genre", "Year", "Length", "Type", "Location", "Content Rating", "Quantity", "MediaID"};
 		
 		DefaultTableModel model = new DefaultTableModel();
 		JTable table = new JTable(model);
@@ -106,7 +101,7 @@ public class Core {
 		}
 		JScrollPane tablePanel = new JScrollPane(table);
 		tablePanel.setBorder(BorderFactory.createTitledBorder(
-			      BorderFactory.createEtchedBorder(), "Movies", TitledBorder.LEFT,
+			      BorderFactory.createEtchedBorder(), "Media Items", TitledBorder.LEFT,
 			      TitledBorder.TOP));
 		main.add(tablePanel);
 		
@@ -118,6 +113,41 @@ public class Core {
 				for(String[] str: items) {
 					model.addRow(str);
 				}
+			}
+		});
+		
+		finalS.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String current = search.getText();
+				String[][] items = media.GetItems();
+				model.setRowCount(0);
+				for(String[] str: items) {
+					String searchable = "";
+					for(String x: str) {
+						searchable += x;
+					}
+					if(searchable.contains(current)) {
+						model.addRow(str);
+					}
+				}
+			}
+		});
+		
+		edit.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int target = table.getSelectedRow();
+				int cols = 9;
+				System.out.println(cols);
+				String[] data = new String[cols];
+				for(int i = 0; i < cols; i++) {
+					data[i] = (String) table.getValueAt(target, i);
+				}
+				media.Remove(Integer.parseInt(data[8]));
+				AddMenu em = new AddMenu(frame, data);
+				model.removeRow(target);
+				
 			}
 		});
 		   

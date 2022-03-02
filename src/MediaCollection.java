@@ -15,6 +15,47 @@ public class MediaCollection {
 		tracks = new HashSet<Track>();
 		albums = new HashSet<Album>();
 		books = new HashSet<Book>();
+		this.fill();
+	}
+
+	public boolean Remove(int id) {
+		boolean removed = false;
+		MediaItem target = null;
+		for(Movie m: movies) {
+			if(id == m.ID) {
+				target = m;
+			}
+		}
+		if(target == null) {
+			for(Album a: albums) {
+				if(id == a.ID) {
+					target = a;
+				}
+			}
+			if(target == null) {
+				for(Track t: tracks) {
+					if(id == t.ID) {
+						target = t;
+					}
+				}
+				if(target == null) {
+					for(Book b: books) {
+						if(id == b.ID) {
+							target = b;
+						}
+					}
+				} else {
+					tracks.remove(target);
+				}
+			} else {
+				albums.remove(target);
+			}
+		} else {
+			movies.remove(target);
+		}
+		
+		
+		return removed;
 	}
 	
 	public boolean Add(Book b) {
@@ -67,7 +108,7 @@ public class MediaCollection {
 	
 	public String[][] GetItems() {
 		int totalItemCount = movies.size() + books.size() + albums.size() + tracks.size();
-		String[][] items = new String[totalItemCount][8];
+		String[][] items = new String[totalItemCount][9];
 		int rowIndex = 0;
 		for(Movie item: movies) {
 			items[rowIndex][0] = item.getName();
@@ -78,6 +119,7 @@ public class MediaCollection {
 			items[rowIndex][5] = item.getLocation();
 			items[rowIndex][6] = item.getContentRating();
 			items[rowIndex][7] = ""+item.getQuantity();
+			items[rowIndex][8] = ""+item.ID;
 			rowIndex++;
 		}
 		for(Album item: albums) {
@@ -89,6 +131,7 @@ public class MediaCollection {
 			items[rowIndex][5] = item.getLocation();
 			items[rowIndex][6] = "NA";
 			items[rowIndex][7] = ""+item.getQuantity();
+			items[rowIndex][8] = ""+item.ID;
 			rowIndex++;
 		}
 		for(Track item: tracks) {
@@ -100,6 +143,7 @@ public class MediaCollection {
 			items[rowIndex][5] = item.getLocation();
 			items[rowIndex][6] = item.getContentRating();
 			items[rowIndex][7] = ""+item.getQuantity();
+			items[rowIndex][8] = ""+item.ID;
 			rowIndex++;
 		}
 		for(Book item: books) {
@@ -111,6 +155,7 @@ public class MediaCollection {
 			items[rowIndex][5] = item.getLocation();
 			items[rowIndex][6] = "NA";
 			items[rowIndex][7] = ""+item.getQuantity();
+			items[rowIndex][8] = ""+item.ID;
 			rowIndex++;
 		}
 		
@@ -171,5 +216,12 @@ public class MediaCollection {
 		}
 		
 		return items;
+	}
+	/**
+	 * used for testing only
+	 */
+	private void fill() {
+		movies.add(new Movie("Avengers", "Action", 2022, 360, "Movie", "Short North", "T"));
+		books.add(new Book("Warriors", "Cats", 2022, 3000, "Book", "OSU library"));
 	}
 }

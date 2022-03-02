@@ -8,6 +8,9 @@ public class MediaItem {
 	private String type;
 	private String location;
 	private int quantity;
+	public int ID;
+	
+	private static int count = 0;
 	
 	public MediaItem(String name, String genre, int year, int length, String type, String location) {
 		this.name = name;
@@ -17,6 +20,22 @@ public class MediaItem {
 		this.type = type;
 		this.location = location;
 		quantity = 1;
+		
+		count++;
+		ID = count;
+	}
+	
+	public MediaItem(String[] data) {
+		this.name = data[0];
+		this.genre = data[1];
+		this.year = Integer.parseInt(data[2]);
+		this.length = Integer.parseInt(data[3]);
+		this.type = data[4];
+		this.location = data[5];
+		quantity = 1;
+		
+		count++;
+		ID = count;
 	}
 	
 	/**
@@ -70,5 +89,12 @@ public class MediaItem {
 	 */
 	public void changeQ(int x) {
 		quantity += x;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		MediaItem i = (MediaItem) o;
+		return (name.equals(i.getName()) && genre.equals(i.getGenre()) && year == i.getYear() && length == i.getLength() && type.equals(i.getType()) 
+				&& location.equals(i.getLocation()));
 	}
 }
