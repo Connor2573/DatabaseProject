@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -23,7 +24,7 @@ public class OrderMenu {
 	
 	public OrderMenu(JFrame frame) {
 		
-		String[] orderDefaults = {"Name", "quantity", "estDelivery"};
+		String[] orderDefaults = {"Name of Order", "quantity", "estDelivery"};
 		String[] defaults = {"Name", "Genre", "2022", "#", "Type", "Location", "CR"};
 		OrderMenu(frame, defaults, orderDefaults);
 		
@@ -56,6 +57,15 @@ public class OrderMenu {
 	       addFrame.setSize(600,400);
 	       
 	       JPanel mainPanel = new JPanel();
+	       JPanel orderPanel = new JPanel();
+	       JPanel itemPanel = new JPanel();
+	       
+	       JLabel orderLabel = new JLabel("Order Info");
+	       JLabel itemLabel = new JLabel("Item Info");
+	       
+	       JPanel orderNamePanel = new JPanel();
+	       JPanel quantityPanel = new JPanel();
+	       JPanel estDeliveryPanel = new JPanel();
 	       
 	       JPanel namePanel = new JPanel();
 	       JPanel genrePanel = new JPanel();
@@ -66,6 +76,10 @@ public class OrderMenu {
 	       JPanel crPanel = new JPanel();
 	       JPanel donePanel = new JPanel();
 	       
+	       JTextField orderNameText = new JTextField(orderDefaults[0], 16);
+	       JTextField quantityText = new JTextField(orderDefaults[1], 8);
+	       JTextField estDeliveryText = new JTextField(orderDefaults[2], 12);
+	       
 	       JTextField nameText = new JTextField(defaults[0], 8);
 	       JTextField genreText = new JTextField(defaults[1], 8);
 	       JTextField yearText = new JTextField(defaults[2], 4);
@@ -75,6 +89,10 @@ public class OrderMenu {
 	       JTextField crText = new JTextField(defaults[6]);
 	       JButton doneButton = new JButton("Done");
 	       
+	       orderNamePanel.add(orderNameText);
+	       quantityPanel.add(quantityText);
+	       estDeliveryPanel.add(estDeliveryText);
+	       
 	       namePanel.add(nameText);
 	       genrePanel.add(genreText);
 	       yearPanel.add(yearText);
@@ -82,12 +100,22 @@ public class OrderMenu {
 	       typePanel.add(typeText);
 	       locationPanel.add(locationText);
 	       
-	       mainPanel.add(namePanel);
-	       mainPanel.add(genrePanel);
-	       mainPanel.add(yearPanel);
-	       mainPanel.add(lengthPanel);
-	       mainPanel.add(typePanel);
-	       mainPanel.add(locationPanel);
+	       orderPanel.add(orderNamePanel);
+	       orderPanel.add(quantityPanel);
+	       orderPanel.add(estDeliveryPanel);
+	       
+	       itemPanel.add(namePanel);
+	       itemPanel.add(genrePanel);
+	       itemPanel.add(yearPanel);
+	       itemPanel.add(lengthPanel);
+	       itemPanel.add(typePanel);
+	       itemPanel.add(locationPanel);
+	       
+	       mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+	       mainPanel.add(orderLabel);
+	       mainPanel.add(orderPanel);
+	       mainPanel.add(itemLabel);
+	       mainPanel.add(itemPanel);
 	       
 	       if(mt == MediaType.MOVIE || mt == MediaType.TRACK) {
 	    	   crPanel.add(crText);
