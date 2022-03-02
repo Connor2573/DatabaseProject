@@ -34,13 +34,13 @@ public class Core {
 		JButton finalS = new JButton("Search");
 		JButton update = new JButton("Update");
 		JButton addButton = new JButton("Add New Media");
+		JButton orderButton = new JButton("Order Media");
 		JButton edit = new JButton("Edit selected Media");
-		JButton orderButton = new JButton("Start Order");
-		
+    
 		addPanel.add(addButton);
+		addPanel.add(orderButton);
 		addPanel.add(update);
 		addPanel.add(edit);
-		addPanel.add(orderButton);
 		
 		searchPanel.add(search);
 		searchPanel.add(finalS);
@@ -62,6 +62,33 @@ public class Core {
 				   frame.setVisible(false);
 				   
 				   OrderMenu am = new OrderMenu(frame);
+			   }
+		   });
+		   
+		   orderButton.addActionListener(new ActionListener() {
+			   @Override
+			   public void actionPerformed(ActionEvent e) {
+				   frame.setVisible(false);
+				   MediaType[] mts = MediaType.values();
+				   
+				   String[] options = new String[mts.length+1];
+				   int index = 0;
+				   for(MediaType mt: mts) {
+					   options[index] = mt.toString();
+					   index++;
+				   }
+				   String getMediaType = (String) JOptionPane.showInputDialog(
+			                null,
+			                "Which type of item do you want to order?",
+			                "Choose item type",
+			                JOptionPane.QUESTION_MESSAGE,
+			                null,
+			                options,
+			                options[3]);
+				   
+				   MediaType mt = MediaType.valueOf(getMediaType.toUpperCase());
+				   
+				   orderMenu om = new orderMenu(mt, frame);
 			   }
 		   });
 		   
