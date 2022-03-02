@@ -18,9 +18,11 @@ import media.MediaItem;
 public class Core {
 	
 	public static MediaCollection media;
+	public static OrderCollection order;
 	
 	public static void main(String[] args) {
 		media = new MediaCollection();
+		order = new OrderCollection();
 		JFrame frame = new JFrame("Database Interface");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
@@ -35,10 +37,12 @@ public class Core {
 		JButton update = new JButton("Update");
 		JButton addButton = new JButton("Add New Media");
 		JButton orderButton = new JButton("Order Media");
+		JButton viewOrdersButton = new JButton("View Orders");
 		JButton edit = new JButton("Edit selected Media");
     
 		addPanel.add(addButton);
 		addPanel.add(orderButton);
+		addPanel.add(viewOrdersButton);
 		addPanel.add(update);
 		addPanel.add(edit);
 		
@@ -62,6 +66,14 @@ public class Core {
 				   frame.setVisible(false);
 				   
 				   OrderMenu om = new OrderMenu(frame);
+			   }
+		   });
+		   viewOrdersButton.addActionListener(new ActionListener() {
+			   @Override
+			   public void actionPerformed(ActionEvent e) {
+				   frame.setVisible(false);
+				   
+				   OrdersTable ot = new OrdersTable(frame);
 			   }
 		   });
 		   

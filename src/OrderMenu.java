@@ -12,8 +12,10 @@ import javax.swing.JTextField;
 
 import media.Album;
 import media.Book;
+import media.MediaItem;
 import media.Movie;
 import media.Track;
+import ordering.Order;
 
 public class OrderMenu {
 	
@@ -133,20 +135,26 @@ public class OrderMenu {
 	    		   attributes[5] = locationText.getText();
 	    		   attributes[6] = crText.getText();
 	    		   
+	    		   MediaItem item = null;
 	    		   switch(mt) {
 	    		   case BOOK:
 	    			   Core.media.Add(new Book(getName(), getGenre(), getYear(), getLength(), getType(), getLocation()));
+	    			   item = new Book(getName(), getGenre(), getYear(), getLength(), getType(), getLocation());
 	    			   break;
 	    		   case MOVIE:
 	    			   Core.media.Add(new Movie(getName(), getGenre(), getYear(), getLength(), getType(), getLocation(), getCR()));
+	    			   item = new Movie(getName(), getGenre(), getYear(), getLength(), getType(), getLocation(), getCR());
 	    			   break;
 	    		   case TRACK:
 	    			   Core.media.Add(new Track(getName(), getGenre(), getYear(), getLength(), getType(), getLocation(), getCR()));
+	    			   item = new Track(getName(), getGenre(), getYear(), getLength(), getType(), getLocation(), getCR());
 	    			   break;
 	    		   case ALBUM:
 	    			   Core.media.Add(new Album(getName(), getGenre(), getYear(), getLength(), getType(), getLocation()));
+	    			   item = new Album(getName(), getGenre(), getYear(), getLength(), getType(), getLocation());
 	    			   break; 
 	    		   }
+	    		   Core.order.Add(new Order(item, orderNameText.getText(), Integer.valueOf(quantityText.getText()), estDeliveryText.getText()));
 	    		   addFrame.dispose();
 	    		   done = true;
 	    		   frame.setVisible(true);
