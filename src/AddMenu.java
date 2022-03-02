@@ -32,6 +32,8 @@ public class AddMenu {
 		MakeMenu(frame, defaults);
 	}
 	
+	
+	
 	private void MakeMenu(JFrame frame, String[] defaults) {
 		   MediaType[] mts = MediaType.values();
 		   

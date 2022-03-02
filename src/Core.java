@@ -35,12 +35,12 @@ public class Core {
 		JButton update = new JButton("Update");
 		JButton addButton = new JButton("Add New Media");
 		JButton edit = new JButton("Edit selected Media");
-		JButton order = new JButton("Start Order");
+		JButton orderButton = new JButton("Start Order");
 		
 		addPanel.add(addButton);
 		addPanel.add(update);
 		addPanel.add(edit);
-		addPanel.add(order);
+		addPanel.add(orderButton);
 		
 		searchPanel.add(search);
 		searchPanel.add(finalS);
@@ -54,6 +54,14 @@ public class Core {
 				   frame.setVisible(false);
 				   
 				   AddMenu am = new AddMenu(frame);
+			   }
+		   });
+		   orderButton.addActionListener(new ActionListener() {
+			   @Override
+			   public void actionPerformed(ActionEvent e) {
+				   frame.setVisible(false);
+				   
+				   OrderMenu am = new OrderMenu(frame);
 			   }
 		   });
 		   
