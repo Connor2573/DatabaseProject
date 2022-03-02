@@ -24,7 +24,7 @@ public class OrderCollection {
 		int rowIndex = 0;
 		for (Order order: this.orders) {
 			returnOrders[rowIndex][0] = order.getName();
-			returnOrders[rowIndex][1] = order.getItem().toString();
+			returnOrders[rowIndex][1] = order.getItem().getName();
 			returnOrders[rowIndex][2] = String.valueOf(order.getQuantity());
 			returnOrders[rowIndex][3] = order.getEstDelivery();
 			rowIndex++;
