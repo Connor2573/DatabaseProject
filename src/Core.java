@@ -61,34 +61,7 @@ public class Core {
 			   public void actionPerformed(ActionEvent e) {
 				   frame.setVisible(false);
 				   
-				   OrderMenu am = new OrderMenu(frame);
-			   }
-		   });
-		   
-		   orderButton.addActionListener(new ActionListener() {
-			   @Override
-			   public void actionPerformed(ActionEvent e) {
-				   frame.setVisible(false);
-				   MediaType[] mts = MediaType.values();
-				   
-				   String[] options = new String[mts.length+1];
-				   int index = 0;
-				   for(MediaType mt: mts) {
-					   options[index] = mt.toString();
-					   index++;
-				   }
-				   String getMediaType = (String) JOptionPane.showInputDialog(
-			                null,
-			                "Which type of item do you want to order?",
-			                "Choose item type",
-			                JOptionPane.QUESTION_MESSAGE,
-			                null,
-			                options,
-			                options[3]);
-				   
-				   MediaType mt = MediaType.valueOf(getMediaType.toUpperCase());
-				   
-				   orderMenu om = new orderMenu(mt, frame);
+				   OrderMenu om = new OrderMenu(frame);
 			   }
 		   });
 		   
