@@ -5,36 +5,34 @@ import java.awt.event.ActionListener;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import media.Album;
 import media.Book;
+import media.MediaItem;
 import media.Movie;
 import media.Track;
+import ordering.Order;
 
-
-public class AddMenu {
+public class OrderMenu {
 	
-
 	private String[] attributes = new String[7];
 	private boolean EditMode = false;
 	private boolean done = false;
 	private MediaType type;
 	
-	public AddMenu(JFrame frame) {
+	public OrderMenu(JFrame frame) {
+		
+		String[] orderDefaults = {"Name of Order", "quantity", "estDelivery"};
 		String[] defaults = {"Name", "Genre", "2022", "#", "Type", "Location", "CR"};
-		MakeMenu(frame, defaults);
-	}
-	public AddMenu(JFrame frame, String[] defaults) {
-		EditMode = true;
-		MakeMenu(frame, defaults);
+		OrderMenu(frame, defaults, orderDefaults);
+		
 	}
 	
-	
-	
-	private void MakeMenu(JFrame frame, String[] defaults) {
+	private void OrderMenu(JFrame frame, String[] defaults, String[] orderDefaults) {
 		   MediaType[] mts = MediaType.values();
 		   
 		   String[] options = new String[mts.length+1];
@@ -45,7 +43,7 @@ public class AddMenu {
 		   }
 		   String getMediaType = (String) JOptionPane.showInputDialog(
 	                null,
-	                "Which type of item do you want to add?",
+	                "Which type of item do you want to order?",
 	                "Choose item type",
 	                JOptionPane.QUESTION_MESSAGE,
 	                null,
@@ -54,13 +52,23 @@ public class AddMenu {
 		   
 		   MediaType mt = MediaType.valueOf(getMediaType.toUpperCase());
 		   type = mt;
-		   
-		JFrame addFrame = new JFrame("Adding");
+		
+		   JFrame addFrame = new JFrame("Ordering");
 	       addFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	       addFrame.setLayout(new BoxLayout(addFrame.getContentPane(), BoxLayout.Y_AXIS));
 	       addFrame.setSize(600,400);
 	       
 	       JPanel mainPanel = new JPanel();
+	       JPanel orderPanel = new JPanel();
+	       JPanel itemPanel = new JPanel();
+	       
+	       JLabel orderLabel = new JLabel("Order Info");
+	       JLabel itemLabel = new JLabel("Item Info");
+	       
+	       JPanel orderNamePanel = new JPanel();
+	       JPanel quantityPanel = new JPanel();
+	       JPanel estDeliveryPanel = new JPanel();
+	       
 	       JPanel namePanel = new JPanel();
 	       JPanel genrePanel = new JPanel();
 	       JPanel yearPanel = new JPanel();
@@ -69,6 +77,10 @@ public class AddMenu {
 	       JPanel locationPanel = new JPanel();
 	       JPanel crPanel = new JPanel();
 	       JPanel donePanel = new JPanel();
+	       
+	       JTextField orderNameText = new JTextField(orderDefaults[0], 16);
+	       JTextField quantityText = new JTextField(orderDefaults[1], 8);
+	       JTextField estDeliveryText = new JTextField(orderDefaults[2], 12);
 	       
 	       JTextField nameText = new JTextField(defaults[0], 8);
 	       JTextField genreText = new JTextField(defaults[1], 8);
@@ -79,6 +91,10 @@ public class AddMenu {
 	       JTextField crText = new JTextField(defaults[6]);
 	       JButton doneButton = new JButton("Done");
 	       
+	       orderNamePanel.add(orderNameText);
+	       quantityPanel.add(quantityText);
+	       estDeliveryPanel.add(estDeliveryText);
+	       
 	       namePanel.add(nameText);
 	       genrePanel.add(genreText);
 	       yearPanel.add(yearText);
@@ -86,12 +102,22 @@ public class AddMenu {
 	       typePanel.add(typeText);
 	       locationPanel.add(locationText);
 	       
-	       mainPanel.add(namePanel);
-	       mainPanel.add(genrePanel);
-	       mainPanel.add(yearPanel);
-	       mainPanel.add(lengthPanel);
-	       mainPanel.add(typePanel);
-	       mainPanel.add(locationPanel);
+	       orderPanel.add(orderNamePanel);
+	       orderPanel.add(quantityPanel);
+	       orderPanel.add(estDeliveryPanel);
+	       
+	       itemPanel.add(namePanel);
+	       itemPanel.add(genrePanel);
+	       itemPanel.add(yearPanel);
+	       itemPanel.add(lengthPanel);
+	       itemPanel.add(typePanel);
+	       itemPanel.add(locationPanel);
+	       
+	       mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+	       mainPanel.add(orderLabel);
+	       mainPanel.add(orderPanel);
+	       mainPanel.add(itemLabel);
+	       mainPanel.add(itemPanel);
 	       
 	       if(mt == MediaType.MOVIE || mt == MediaType.TRACK) {
 	    	   crPanel.add(crText);
@@ -109,20 +135,22 @@ public class AddMenu {
 	    		   attributes[5] = locationText.getText();
 	    		   attributes[6] = crText.getText();
 	    		   
+	    		   MediaItem item = null;
 	    		   switch(mt) {
 	    		   case BOOK:
-	    			   Core.media.Add(new Book(getName(), getGenre(), getYear(), getLength(), getType(), getLocation()));
+	    			   item = new Book(getName(), getGenre(), getYear(), getLength(), getType(), getLocation());
 	    			   break;
 	    		   case MOVIE:
-	    			   Core.media.Add(new Movie(getName(), getGenre(), getYear(), getLength(), getType(), getLocation(), getCR()));
+	    			   item = new Movie(getName(), getGenre(), getYear(), getLength(), getType(), getLocation(), getCR());
 	    			   break;
 	    		   case TRACK:
-	    			   Core.media.Add(new Track(getName(), getGenre(), getYear(), getLength(), getType(), getLocation(), getCR()));
+	    			   item = new Track(getName(), getGenre(), getYear(), getLength(), getType(), getLocation(), getCR());
 	    			   break;
 	    		   case ALBUM:
-	    			   Core.media.Add(new Album(getName(), getGenre(), getYear(), getLength(), getType(), getLocation()));
+	    			   item = new Album(getName(), getGenre(), getYear(), getLength(), getType(), getLocation());
 	    			   break; 
 	    		   }
+	    		   Core.order.Add(new Order(item, orderNameText.getText(), Integer.valueOf(quantityText.getText()), estDeliveryText.getText()));
 	    		   addFrame.dispose();
 	    		   done = true;
 	    		   frame.setVisible(true);
@@ -134,6 +162,8 @@ public class AddMenu {
 	       
 	       addFrame.getContentPane().add(mainPanel);
 	       addFrame.setVisible(true); 
+
+		
 	}
 	
 	private String getName() {
@@ -172,4 +202,3 @@ public class AddMenu {
 		return done;
 	}
 }
-
