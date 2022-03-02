@@ -132,7 +132,6 @@ public class Core {
 				media.Remove(Integer.parseInt(data[8]));
 				AddMenu em = new AddMenu(frame, data);
 				model.removeRow(target);
-				
 			}
 		});
 		   

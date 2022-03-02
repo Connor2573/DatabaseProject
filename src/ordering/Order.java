@@ -27,6 +27,13 @@ public class Order {
 	}
 	
 	/**
+	 * @return the ID
+	 */
+	public int getID() {
+		return ID;
+	}
+	
+	/**
 	 * @return the item
 	 */
 	public MediaItem getItem() {

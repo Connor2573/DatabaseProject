@@ -26,7 +26,7 @@ public class OrdersTable {
 	   
 		JPanel mainPanel = new JPanel();
 		
-		String[] columnNames = {"Name of Order", "Name of Item", "Quantity", "Estimated Date of Arrival"};
+		String[] columnNames = {"Order ID", "Name of Order", "Name of Item", "Quantity", "Estimated Date of Arrival"};
 		
 		DefaultTableModel model = new DefaultTableModel();
 		JTable table = new JTable(model);
@@ -45,7 +45,17 @@ public class OrdersTable {
 		      	BorderFactory.createEtchedBorder(), "Orders", TitledBorder.LEFT,
 		      	TitledBorder.TOP));
 		mainPanel.add(tablePanel);
+		JButton activateButton = new JButton("Activate Selected Order");
 		JButton doneButton = new JButton("Done");
+		
+		activateButton.addActionListener(new ActionListener() {
+	    	   @Override
+	    	   public void actionPerformed(ActionEvent e) {
+	    		   int target = table.getSelectedRow();
+	    		   Core.order.Activate(Integer.valueOf(table.getValueAt(target, 0).toString()));
+	    		   model.removeRow(target);
+	    	   }
+	    });
 		
 		doneButton.addActionListener(new ActionListener() {
 	    	   @Override
@@ -55,6 +65,7 @@ public class OrdersTable {
 	    	   }
 	    });
 		
+		mainPanel.add(activateButton);
 		mainPanel.add(doneButton);
 		ordersFrame.getContentPane().add(mainPanel);
 	    ordersFrame.setVisible(true);

@@ -86,7 +86,7 @@ public class OrderMenu {
 	       JTextField genreText = new JTextField(defaults[1], 8);
 	       JTextField yearText = new JTextField(defaults[2], 4);
 	       JTextField lengthText = new JTextField(defaults[3], 4);
-	       JTextField typeText = new JTextField(defaults[4], 8);
+	       JTextField typeText = new JTextField(mt.toString(), 8);
 	       JTextField locationText = new JTextField(defaults[5], 8);
 	       JTextField crText = new JTextField(defaults[6]);
 	       JButton doneButton = new JButton("Done");
