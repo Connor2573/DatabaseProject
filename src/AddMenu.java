@@ -40,25 +40,6 @@ public class AddMenu {
 	
 	
 	private void MakeMenu(JFrame frame, String[] defaults) {
-		   MediaType[] mts = MediaType.values();
-		   
-		   String[] options = new String[mts.length+1];
-		   int index = 0;
-		   for(MediaType mt: mts) {
-			   options[index] = mt.toString();
-			   index++;
-		   }
-		   String getMediaType = (String) JOptionPane.showInputDialog(
-	                null,
-	                "Which type of item do you want to add?",
-	                "Choose item type",
-	                JOptionPane.QUESTION_MESSAGE,
-	                null,
-	                options,
-	                options[3]);
-		   
-		   MediaType mt = MediaType.valueOf(getMediaType.toUpperCase());
-		   type = mt;
 		   
 		JFrame addFrame = new JFrame("Adding");
 	       addFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
