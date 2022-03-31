@@ -83,6 +83,7 @@ public class AddMenu {
 	       JTextField crText = new JTextField(defaults[5]);
 	       JTextField typeText = new JTextField(defaults[6], 8);
 	       JButton doneButton = new JButton("Done");
+	       JButton deleteButton = new JButton("Delete");
 	       
 	       mediaIDPanel.add(mediaID);
 	       NamePanel.add(nameText);
@@ -117,9 +118,19 @@ public class AddMenu {
 	    		   frame.setVisible(true);
 	    	   }
 	       });
+	       
+	       deleteButton.addActionListener(new ActionListener() {
+	    	   @Override
+	    	   public void actionPerformed(ActionEvent e) {
+	    		   addFrame.dispose();
+	    		   done = true;
+	    		   frame.setVisible(true);
+	    	   }
+	       });
 	       donePanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 	       donePanel.add(doneButton);
-	       mainPanel.add(doneButton);
+	       donePanel.add(deleteButton);
+	       mainPanel.add(donePanel);
 	       
 	       addFrame.getContentPane().add(mainPanel);
 	       addFrame.setVisible(true); 
