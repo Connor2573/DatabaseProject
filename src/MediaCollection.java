@@ -106,6 +106,10 @@ public class MediaCollection {
 		return added;
 	}
 	
+	public void AddtoDatabase() {
+		
+	}
+	
 	public String[][] GetItems() {
 		int totalItemCount = movies.size() + books.size() + albums.size() + tracks.size();
 		String[][] items = new String[totalItemCount][9];

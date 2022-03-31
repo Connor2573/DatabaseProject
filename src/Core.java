@@ -1,5 +1,7 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -13,6 +15,7 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
+import DatabaseBridge.Bridge;
 import media.MediaItem;
 
 public class Core {
@@ -21,6 +24,7 @@ public class Core {
 	
 	public static void main(String[] args) {
 		media = new MediaCollection();
+		Connection conn = Bridge.initializeDB();
 		JFrame frame = new JFrame("Database Interface");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
@@ -51,11 +55,11 @@ public class Core {
 			   public void actionPerformed(ActionEvent e) {
 				   frame.setVisible(false);
 				   
-				   AddMenu am = new AddMenu(frame);
+				   AddMenu am = new AddMenu(frame, conn);
 			   }
 		   });
 		   
-		String[] columnNames = {"Name", "Genre", "Year", "Length", "Type", "Location", "Content Rating", "Quantity", "MediaID"};
+		String[] columnNames = {"MediaID", "Name", "Year", "Status", "Location", "Certificate", "Type"};
 		
 		DefaultTableModel model = new DefaultTableModel();
 		JTable table = new JTable(model);
@@ -71,7 +75,7 @@ public class Core {
 		update.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String[][] items = media.GetItems();
+				ArrayList<String[]> items = Bridge.GetAllMediaItems(conn);
 				model.setRowCount(0);
 				for(String[] str: items) {
 					model.addRow(str);
@@ -83,7 +87,7 @@ public class Core {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String current = search.getText();
-				String[][] items = media.GetItems();
+				ArrayList<String[]> items = Bridge.GetAllMediaItems(conn);
 				model.setRowCount(0);
 				for(String[] str: items) {
 					String searchable = "";
@@ -101,20 +105,21 @@ public class Core {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int target = table.getSelectedRow();
-				int cols = 9;
+				int cols = columnNames.length;
 				System.out.println(cols);
 				String[] data = new String[cols];
 				for(int i = 0; i < cols; i++) {
 					data[i] = (String) table.getValueAt(target, i);
 				}
-				media.Remove(Integer.parseInt(data[8]));
-				AddMenu em = new AddMenu(frame, data);
+				int id = Integer.parseInt(data[0]);
+				AddMenu em = new AddMenu(frame, data, conn);
 				model.removeRow(target);
-				
+				Bridge.RemoveMediaWithID(conn, id);
 			}
 		});
 		   
 		frame.getContentPane().add(main);
 		frame.setVisible(true);
+		
 	}
 }

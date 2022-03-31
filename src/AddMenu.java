@@ -1,6 +1,7 @@
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -9,6 +10,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import DatabaseBridge.Bridge;
 import media.Album;
 import media.Book;
 import media.Movie;
@@ -22,13 +24,16 @@ public class AddMenu {
 	private boolean EditMode = false;
 	private boolean done = false;
 	private MediaType type;
+	private Connection conn;
 	
-	public AddMenu(JFrame frame) {
-		String[] defaults = {"Name", "Genre", "2022", "#", "Type", "Location", "CR"};
+	public AddMenu(JFrame frame, Connection conn) {
+		String[] defaults = {"MediaID", "Name", "2022", "Status", "Location", "Certificate", "Type"};
+		this.conn = conn;
 		MakeMenu(frame, defaults);
 	}
-	public AddMenu(JFrame frame, String[] defaults) {
+	public AddMenu(JFrame frame, String[] defaults, Connection conn) {
 		EditMode = true;
+		this.conn = conn;
 		MakeMenu(frame, defaults);
 	}
 	
@@ -59,68 +64,52 @@ public class AddMenu {
 	       addFrame.setSize(600,400);
 	       
 	       JPanel mainPanel = new JPanel();
-	       JPanel namePanel = new JPanel();
-	       JPanel genrePanel = new JPanel();
+	       JPanel mediaIDPanel = new JPanel();
+	       JPanel NamePanel = new JPanel();
 	       JPanel yearPanel = new JPanel();
-	       JPanel lengthPanel = new JPanel();
+	       JPanel statusPanel = new JPanel();
 	       JPanel typePanel = new JPanel();
 	       JPanel locationPanel = new JPanel();
 	       JPanel crPanel = new JPanel();
 	       JPanel donePanel = new JPanel();
 	       
-	       JTextField nameText = new JTextField(defaults[0], 8);
-	       JTextField genreText = new JTextField(defaults[1], 8);
+	       JTextField mediaID = new JTextField(defaults[0], 8);
+	       JTextField nameText = new JTextField(defaults[1], 8);
 	       JTextField yearText = new JTextField(defaults[2], 4);
-	       JTextField lengthText = new JTextField(defaults[3], 4);
-	       JTextField typeText = new JTextField(defaults[4], 8);
-	       JTextField locationText = new JTextField(defaults[5], 8);
-	       JTextField crText = new JTextField(defaults[6]);
+	       JTextField statusText = new JTextField(defaults[3], 4);
+	       JTextField locationText = new JTextField(defaults[4], 7);
+	       JTextField crText = new JTextField(defaults[5]);
+	       JTextField typeText = new JTextField(defaults[6], 8);
 	       JButton doneButton = new JButton("Done");
 	       
-	       namePanel.add(nameText);
-	       genrePanel.add(genreText);
+	       mediaIDPanel.add(mediaID);
+	       NamePanel.add(nameText);
 	       yearPanel.add(yearText);
-	       lengthPanel.add(lengthText);
+	       statusPanel.add(statusText);
 	       typePanel.add(typeText);
 	       locationPanel.add(locationText);
+	       crPanel.add(crText);
 	       
-	       mainPanel.add(namePanel);
-	       mainPanel.add(genrePanel);
+	       mainPanel.add(mediaIDPanel);
+	       mainPanel.add(NamePanel);
 	       mainPanel.add(yearPanel);
-	       mainPanel.add(lengthPanel);
+	       mainPanel.add(statusPanel);
 	       mainPanel.add(typePanel);
 	       mainPanel.add(locationPanel);
-	       
-	       if(mt == MediaType.MOVIE || mt == MediaType.TRACK) {
-	    	   crPanel.add(crText);
-	    	   mainPanel.add(crPanel);
-	       }
+	       mainPanel.add(crPanel);
 	       
 	       doneButton.addActionListener(new ActionListener() {
 	    	   @Override
 	    	   public void actionPerformed(ActionEvent e) {
-	    		   attributes[0] = nameText.getText();
-	    		   attributes[1] = genreText.getText();
+	    		   attributes[0] = mediaID.getText();
+	    		   attributes[1] = nameText.getText();
 	    		   attributes[2] = yearText.getText();
-	    		   attributes[3] = lengthText.getText();
-	    		   attributes[4] = typeText.getText();
-	    		   attributes[5] = locationText.getText();
-	    		   attributes[6] = crText.getText();
+	    		   attributes[3] = statusText.getText();
+	    		   attributes[4] = locationText.getText();
+	    		   attributes[5] = crText.getText();
+	    		   attributes[6] = typeText.getText();
 	    		   
-	    		   switch(mt) {
-	    		   case BOOK:
-	    			   Core.media.Add(new Book(getName(), getGenre(), getYear(), getLength(), getType(), getLocation()));
-	    			   break;
-	    		   case MOVIE:
-	    			   Core.media.Add(new Movie(getName(), getGenre(), getYear(), getLength(), getType(), getLocation(), getCR()));
-	    			   break;
-	    		   case TRACK:
-	    			   Core.media.Add(new Track(getName(), getGenre(), getYear(), getLength(), getType(), getLocation(), getCR()));
-	    			   break;
-	    		   case ALBUM:
-	    			   Core.media.Add(new Album(getName(), getGenre(), getYear(), getLength(), getType(), getLocation()));
-	    			   break; 
-	    		   }
+	    		   Bridge.addNewMedia(conn, attributes);
 	    		   addFrame.dispose();
 	    		   done = true;
 	    		   frame.setVisible(true);
