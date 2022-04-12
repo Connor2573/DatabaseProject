@@ -81,7 +81,7 @@ public class Core {
 			   }
 		   });
 		   
-		String[] columnNames = {"MediaID", "Name", "Year", "Status", "Location", "Certificate", "Type"};
+		String[] columnNames = {"MediaID", "Name", "Year", "Type", "Price", "Location", "Status", "Certificate"};
 		
 		DefaultTableModel model = new DefaultTableModel();
 		JTable table = new JTable(model);

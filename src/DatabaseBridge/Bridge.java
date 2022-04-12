@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class Bridge {
 	
-	private static String databaseFileName = "Database.db";
+	private static String databaseFileName = "dpFinalCopy.db";
 	
     public static Connection initializeDB() {
         String url = "jdbc:sqlite:" + databaseFileName;
@@ -30,7 +30,7 @@ public class Bridge {
         return conn;
     }
 
-	private static String mediaSql = "Insert Into MEDIA_ITEM (MediaID, Name, Year, Status, Location, Certificate, Type) values(?, ?, ?, ?, ?, ?, ?);";
+	private static String mediaSql = "Insert Into MEDIA_ITEM (MediaID, Name, Year, Type, Price, Location, Status, Certificate) values(?, ?, ?, ?, ?, ?, ?, ?);";
 	
     public static boolean addNewMedia(Connection conn, String[] args) {
     	boolean success = false;
@@ -40,15 +40,30 @@ public class Bridge {
     		stmt.setString(2, args[1]);
     		stmt.setInt(3, Integer.parseInt(args[2]));
     		stmt.setString(4, args[3]);
-    		stmt.setString(5, args[4]);
+    		stmt.setDouble(5, Double.parseDouble(args[4]));
     		stmt.setString(6, args[5]);
     		stmt.setString(7, args[6]);
+    		stmt.setString(8, args[7]);
     		stmt.executeUpdate();
     		success = true;
     	} catch (SQLException e) {
     		System.out.println(e.getMessage());
     	}
     	return success;
+    }
+    
+    public static void addAlbum(Connection conn, String[] args) {
+    	try {
+    		PreparedStatement stmt = conn.prepareStatement(mediaSql);
+    		stmt.setInt(1, Integer.parseInt(args[0]));
+    		stmt.setString(2, args[1]);
+    		stmt.setString(3, args[2]);
+    		stmt.setString(4, args[3]);
+    		stmt.setString(5, args[4]);
+    		stmt.executeUpdate();
+    	} catch (SQLException e) {
+    		System.out.println(e.getMessage());
+    	}
     }
     
     public static void addBook(Connection conn, String[] args) {
@@ -65,15 +80,15 @@ public class Bridge {
     	}
     }
     
-    public static void addMovie(Connection conn, String[] args) {
+    public static void addMovie(Connection conn, String[] attributes) {
     	try {
     		PreparedStatement stmt = conn.prepareStatement(mediaSql);
-    		stmt.setInt(1, Integer.parseInt(args[0]));
-    		stmt.setString(2, args[1]);
-    		stmt.setString(3, args[2]);
-    		stmt.setString(4, args[3]);
-    		stmt.setString(5, args[4]);
-    		stmt.setInt(6, Integer.parseInt(args[5]));
+    		stmt.setInt(1, Integer.parseInt(attributes[0]));
+    		stmt.setString(2, attributes[1]);
+    		stmt.setString(3, attributes[2]);
+    		stmt.setString(4, attributes[3]);
+    		stmt.setString(5, attributes[4]);
+    		stmt.setInt(6, Integer.parseInt(attributes[5]));
     		stmt.executeUpdate();
     	} catch (SQLException e) {
     		System.out.println(e.getMessage());
@@ -105,16 +120,16 @@ public class Bridge {
         	ResultSet rs = stmt.executeQuery(getMediaItemsSQL);
         	ResultSetMetaData rsmd = rs.getMetaData();
         	int columnCount = rsmd.getColumnCount();
-        	System.out.println(columnCount);
         	while (rs.next()) {
         		String[] row = new String[columnCount];
         		row[0] = ""+rs.getInt(1);
         		row[1] = rs.getString(2);
         		row[2] = ""+rs.getInt(3);
         		row[3] = rs.getString(4);
-        		row[4] = rs.getString(5);
+        		row[4] = ""+rs.getDouble(5);
         		row[5] = rs.getString(6);
         		row[6] = rs.getString(7);
+        		row[7] = rs.getString(8);
         		rows.add(row);
         	}
         } catch (SQLException e) {
