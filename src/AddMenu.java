@@ -18,7 +18,8 @@ import media.Track;
 
 
 public class AddMenu {
-	
+
+	private static String[] trackAttr = {};
 
 	private String[] attributes = new String[8];
 	private boolean EditMode = false;
@@ -40,12 +41,24 @@ public class AddMenu {
 	
 	
 	private void MakeMenu(JFrame frame, String[] defaults) {
-		   
+		
+		String[] optionsToChoose = {"BOOK", "TRACK", "MOVIE", "ALBUM"};
+		
+		String getType = (String) JOptionPane.showInputDialog(
+	                null,
+	                "What fruit do you like the most?",
+	                "Choose Fruit",
+	                JOptionPane.QUESTION_MESSAGE,
+	                null,
+	                optionsToChoose,
+	                optionsToChoose[0]);
+		
 		JFrame addFrame = new JFrame("Adding");
 	       addFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	       addFrame.setLayout(new BoxLayout(addFrame.getContentPane(), BoxLayout.Y_AXIS));
 	       addFrame.setSize(600,400);
 	       
+	       //MEDIA_ITEM attributes
 	       JPanel mainPanel = new JPanel();
 	       JPanel mediaIDPanel = new JPanel();
 	       JPanel NamePanel = new JPanel();
@@ -54,9 +67,7 @@ public class AddMenu {
 	       JPanel typePanel = new JPanel();
 	       JPanel locationPanel = new JPanel();
 	       JPanel crPanel = new JPanel();
-	       JPanel donePanel = new JPanel();
 	       JPanel pricePanel = new JPanel();
-	       
 	       JTextField mediaID = new JTextField(defaults[0], 8);
 	       JTextField nameText = new JTextField(defaults[1], 8);
 	       JTextField yearText = new JTextField(defaults[2], 4);
@@ -65,42 +76,129 @@ public class AddMenu {
 	       JTextField locationText = new JTextField(defaults[5], 7);
 	       JTextField crText = new JTextField(defaults[7]);
 	       JTextField typeText = new JTextField(defaults[3], 8);
+	       
+	       //UI buttons/panels
+	       JPanel donePanel = new JPanel();
 	       JButton doneButton = new JButton("Done");
 	       JButton deleteButton = new JButton("Delete");
 	       
-	       mediaIDPanel.add(mediaID);
-	       NamePanel.add(nameText);
-	       yearPanel.add(yearText);
-	       statusPanel.add(statusText);
-	       typePanel.add(typeText);
-	       locationPanel.add(locationText);
-	       crPanel.add(crText);
-	       pricePanel.add(priceText);
+	       //TRACK entries
+	       JPanel trackAttributes = new JPanel();
+	       JTextField trackIDTxt = new JTextField("TrackID", 6);
+	       JTextField trackNameTxt = new JTextField("TrackName", 8);
 	       
-	       mainPanel.add(mediaIDPanel);
-	       mainPanel.add(NamePanel);
-	       mainPanel.add(yearPanel);
-	       mainPanel.add(statusPanel);
-	       mainPanel.add(typePanel);
-	       mainPanel.add(locationPanel);
-	       mainPanel.add(crPanel);
-	       mainPanel.add(pricePanel);
+	       //MOVIE entries
+	       JPanel movieAttributes = new JPanel();
+	       JTextField leadActor = new JTextField("Actor", 12);
+	       JTextField directorName = new JTextField("Director", 12);
+	       
+	       //Album entries
+	       JPanel albumAttributes = new JPanel();
+	       JTextField artistTxt = new JTextField("Artist", 12);
+	       
+	       //Book Entries
+	       JPanel bookAttributes = new JPanel();
+	       JTextField authorName = new JTextField("Author Name", 12);
+	       JTextField publisherName = new JTextField("Publisher Name", 12);
+	       
+	       //shared entries
+	       JTextField albumIDTxt = new JTextField("AlbumID", 6);
+	       JTextField genreTxt = new JTextField("Genre", 8);
+	       JTextField lengthTxt = new JTextField("0", 3);
+	       
+	       if(!getType.contains("TRACK")) {
+		       mediaIDPanel.add(mediaID);
+		       NamePanel.add(nameText);
+		       yearPanel.add(yearText);
+		       statusPanel.add(statusText);
+		       typePanel.add(typeText);
+		       locationPanel.add(locationText);
+		       crPanel.add(crText);
+		       pricePanel.add(priceText);
+		       
+		       mainPanel.add(mediaIDPanel);
+		       mainPanel.add(NamePanel);
+		       mainPanel.add(yearPanel);
+		       mainPanel.add(statusPanel);
+		       mainPanel.add(typePanel);
+		       mainPanel.add(locationPanel);
+		       mainPanel.add(crPanel);
+		       mainPanel.add(pricePanel);
+		       if(getType.contains("MOVIE")) {
+				   movieAttributes.add(leadActor);
+				   movieAttributes.add(directorName);
+				   movieAttributes.add(genreTxt);
+				   movieAttributes.add(lengthTxt);
+				   mainPanel.add(movieAttributes);
+			   } else if(getType.contains("ALBUM")) {
+				   albumAttributes.add(artistTxt);
+				   mainPanel.add(albumAttributes);
+			   } else if(getType.contains("BOOK")) {
+				   bookAttributes.add(authorName);
+				   bookAttributes.add(publisherName);
+				   mainPanel.add(bookAttributes);
+			   }
+	       } else if(getType.contains("TRACK")) {
+	    	   trackAttributes.add(trackIDTxt);
+	    	   trackAttributes.add(albumIDTxt);
+	    	   trackAttributes.add(trackNameTxt);
+	    	   trackAttributes.add(lengthTxt);
+	    	   
+	    	   mainPanel.add(trackAttributes);
+		   }
 	       
 	       doneButton.addActionListener(new ActionListener() {
 	    	   @Override
 	    	   public void actionPerformed(ActionEvent e) {
-	    		   attributes[0] = mediaID.getText();
-	    		   attributes[1] = nameText.getText();
-	    		   attributes[2] = yearText.getText();
-	    		   attributes[4] = priceText.getText();
-	    		   attributes[6] = statusText.getText();
-	    		   attributes[5] = locationText.getText();
-	    		   attributes[7] = crText.getText();
-	    		   attributes[3] = typeText.getText();
+	    		   String strType = getType;
+	    		   if(!strType.contains("TRACK")) {
+		    		   attributes[0] = mediaID.getText();
+		    		   attributes[1] = nameText.getText();
+		    		   attributes[2] = yearText.getText();
+		    		   attributes[4] = priceText.getText();
+		    		   attributes[6] = statusText.getText();
+		    		   attributes[5] = locationText.getText();
+		    		   attributes[7] = crText.getText();
+		    		   attributes[3] = typeText.getText();
+		    		   Bridge.addNewMedia(conn, attributes);
+		    		   if(getType.contains("MOVIE")) {
+		    			   String[] attr = new String[6];
+		    			   attr[0] = mediaID.getText();
+		    			   attr[1] = leadActor.getText();
+		    			   attr[2] = directorName.getText();
+		    			   attr[3] = genreTxt.getText();
+		    			   attr[4] = crText.getText();
+		    			   attr[5] = lengthTxt.getText();
+		    			   
+		    			   Bridge.addMovie(conn, attr);
+		    		   } else if(getType.contains("ALBUM")) {
+		    			   String[] attr = new String[5];
+		    			   attr[0] = albumIDTxt.getText();
+		    			   attr[1] = mediaID.getText();
+		    			   attr[2] = artistTxt.getText();
+		    			   attr[3] = genreTxt.getText();
+		    			   attr[4] = crText.getText();
+		    			   Bridge.addAlbum(conn, attr);
+		    		   } else if(getType.contains("BOOK")) {
+		    			   String[] attr = new String[5];
+		    			   attr[0] = mediaID.getText();
+		    			   attr[1] = authorName.getText();
+		    			   attr[2] = publisherName.getText();
+		    			   attr[3] = genreTxt.getText();
+		    			   attr[4] = lengthTxt.getText();
+		    			   
+		    			   Bridge.addBook(conn, attr);
+		    		   }
+	    		   } else {
+	    			   String[] trackAttr = new String[5];
+	    			   trackAttr[0] = trackIDTxt.getText();
+	    			   trackAttr[1] = albumIDTxt.getText();
+	    			   trackAttr[2] = trackNameTxt.getText();
+	    			   trackAttr[3] = lengthTxt.getText();
+	    			   
+	    			   Bridge.addTrack(conn, trackAttr);
+	    		   }
 	    		   
-	    		   Bridge.addNewMedia(conn, attributes);
-	    		   
-	    		   type = attributes[3];
 	    		   
 	    		   addFrame.dispose();
 	    		   done = true;

@@ -52,11 +52,13 @@ public class Bridge {
     	return success;
     }
     
+    private static String albumSql = "Insert Into ALBUM (AlbumID, MediaID, Artist, Genre, ContentRating) values(?, ?, ?, ?, ?);";
+	
     public static void addAlbum(Connection conn, String[] args) {
     	try {
-    		PreparedStatement stmt = conn.prepareStatement(mediaSql);
+    		PreparedStatement stmt = conn.prepareStatement(albumSql);
     		stmt.setInt(1, Integer.parseInt(args[0]));
-    		stmt.setString(2, args[1]);
+    		stmt.setInt(2, Integer.parseInt(args[1]));
     		stmt.setString(3, args[2]);
     		stmt.setString(4, args[3]);
     		stmt.setString(5, args[4]);
@@ -66,45 +68,48 @@ public class Bridge {
     	}
     }
     
+    private static String bookSql = "Insert Into BOOK (MediaID, AuthorName, PublisherName, Genre, Chapters) values(?, ?, ?, ?, ?);";
+	
     public static void addBook(Connection conn, String[] args) {
     	try {
-    		PreparedStatement stmt = conn.prepareStatement(mediaSql);
+    		PreparedStatement stmt = conn.prepareStatement(bookSql);
     		stmt.setInt(1, Integer.parseInt(args[0]));
     		stmt.setString(2, args[1]);
     		stmt.setString(3, args[2]);
     		stmt.setString(4, args[3]);
-    		stmt.setString(5, args[4]);
+    		stmt.setInt(5, Integer.parseInt(args[4]));
     		stmt.executeUpdate();
     	} catch (SQLException e) {
     		System.out.println(e.getMessage());
     	}
     }
-    
-    public static void addMovie(Connection conn, String[] attributes) {
+	
+    private static String movieSql = "Insert Into MOVIE (MediaID, LeadActor, DirectorName, Genre, ContentRating, Length) values(?, ?, ?, ?, ?, ?);";
+	
+    public static void addMovie(Connection conn, String[] args) {
     	try {
-    		PreparedStatement stmt = conn.prepareStatement(mediaSql);
-    		stmt.setInt(1, Integer.parseInt(attributes[0]));
-    		stmt.setString(2, attributes[1]);
-    		stmt.setString(3, attributes[2]);
-    		stmt.setString(4, attributes[3]);
-    		stmt.setString(5, attributes[4]);
-    		stmt.setInt(6, Integer.parseInt(attributes[5]));
-    		stmt.executeUpdate();
-    	} catch (SQLException e) {
-    		System.out.println(e.getMessage());
-    	}
-    }
-    
-
-    public static void addTrack(Connection conn, String[] args) {
-    	try {
-    		PreparedStatement stmt = conn.prepareStatement(mediaSql);
+    		PreparedStatement stmt = conn.prepareStatement(movieSql);
     		stmt.setInt(1, Integer.parseInt(args[0]));
     		stmt.setString(2, args[1]);
     		stmt.setString(3, args[2]);
     		stmt.setString(4, args[3]);
     		stmt.setString(5, args[4]);
     		stmt.setInt(6, Integer.parseInt(args[5]));
+    		stmt.executeUpdate();
+    	} catch (SQLException e) {
+    		System.out.println(e.getMessage());
+    	}
+    }
+    
+	private static String trackSql = "Insert Into TRACK (TrackID, AlbumID, TrackName, Length) values(?, ?, ?, ?);";
+	
+    public static void addTrack(Connection conn, String[] args) {
+    	try {
+    		PreparedStatement stmt = conn.prepareStatement(trackSql);
+    		stmt.setInt(1, Integer.parseInt(args[0]));
+    		stmt.setInt(2, Integer.parseInt(args[1]));
+    		stmt.setString(3, args[2]);
+    		stmt.setInt(4, Integer.parseInt(args[3]));
     		stmt.executeUpdate();
     	} catch (SQLException e) {
     		System.out.println(e.getMessage());
