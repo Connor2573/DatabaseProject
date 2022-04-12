@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class Bridge {
 	
-	private static String databaseFileName = "Database.db";
+	private static String databaseFileName = "dpFinalCopy.db";
 	
     public static Connection initializeDB() {
         String url = "jdbc:sqlite:" + databaseFileName;
@@ -44,7 +44,7 @@ public class Bridge {
     		stmt.setString(2, args[1]);
     		stmt.setInt(3, Integer.parseInt(args[2]));
     		stmt.setString(4, args[3]);
-    		stmt.setInt(5, Integer.parseInt(args[4]));
+    		stmt.setDouble(5, Double.parseDouble(args[4]));
     		stmt.setString(6, args[5]);
     		stmt.setString(7, args[6]);
     		stmt.setString(8, args[7]);
@@ -122,14 +122,13 @@ public class Bridge {
         	ResultSet rs = stmt.executeQuery(getMediaItemsSQL);
         	ResultSetMetaData rsmd = rs.getMetaData();
         	int columnCount = rsmd.getColumnCount();
-        	System.out.println(columnCount);
         	while (rs.next()) {
         		String[] row = new String[columnCount];
         		row[0] = ""+rs.getInt(1);
         		row[1] = rs.getString(2);
         		row[2] = ""+rs.getInt(3);
         		row[3] = rs.getString(4);
-        		row[4] = ""+rs.getInt(5);
+        		row[4] = ""+rs.getDouble(5);
         		row[5] = rs.getString(6);
         		row[6] = rs.getString(7);
         		row[7] = rs.getString(8);

@@ -21,13 +21,13 @@ import media.Track;
 public class AddMenu {
 	
 
-	private String[] attributes = new String[7];
+	private String[] attributes = new String[8];
 	private boolean EditMode = false;
 	private boolean done = false;
 	private Connection conn;
 	
 	public AddMenu(JFrame frame, Connection conn) {
-		String[] defaults = {String.valueOf(Bridge.GetNextMediaID(conn)), "Name", "2022", "Type", "Price (INT)", "Location", "Status", "Certificate"};
+		String[] defaults = {String.valueOf(Bridge.GetNextMediaID(conn)), "Name", "2022", "Type", "0.00", "Location", "Status", "Certificate"};
 		this.conn = conn;
 		MakeMenu(frame, defaults);
 	}
@@ -58,14 +58,16 @@ public class AddMenu {
 	       JPanel locationPanel = new JPanel();
 	       JPanel crPanel = new JPanel();
 	       JPanel donePanel = new JPanel();
+	       JPanel pricePanel = new JPanel();
 	       
 	       JTextField mediaID = new JTextField(defaults[0], 8);
 	       JTextField nameText = new JTextField(defaults[1], 8);
 	       JTextField yearText = new JTextField(defaults[2], 4);
-	       JTextField statusText = new JTextField(defaults[3], 4);
-	       JTextField locationText = new JTextField(defaults[4], 7);
-	       JTextField crText = new JTextField(defaults[5]);
-	       JTextField typeText = new JTextField(defaults[6], 8);
+	       JTextField priceText = new JTextField(defaults[4], 5);
+	       JTextField statusText = new JTextField(defaults[6], 8);
+	       JTextField locationText = new JTextField(defaults[5], 7);
+	       JTextField crText = new JTextField(defaults[7]);
+	       JTextField typeText = new JTextField(defaults[3], 8);
 	       JButton doneButton = new JButton("Done");
 	       JButton deleteButton = new JButton("Delete");
 	       
@@ -75,6 +77,7 @@ public class AddMenu {
 	       statusPanel.add(statusText);
 	       locationPanel.add(locationText);
 	       crPanel.add(crText);
+	       pricePanel.add(priceText);
 	       
 	       mainPanel.add(typeCombo);
 	       mainPanel.add(mediaIDPanel);
@@ -83,6 +86,7 @@ public class AddMenu {
 	       mainPanel.add(statusPanel);
 	       mainPanel.add(locationPanel);
 	       mainPanel.add(crPanel);
+	       mainPanel.add(pricePanel);
 	       
 	       doneButton.addActionListener(new ActionListener() {
 	    	   @Override
@@ -90,12 +94,16 @@ public class AddMenu {
 	    		   attributes[0] = mediaID.getText();
 	    		   attributes[1] = nameText.getText();
 	    		   attributes[2] = yearText.getText();
-	    		   attributes[3] = statusText.getText();
-	    		   attributes[4] = locationText.getText();
-	    		   attributes[5] = crText.getText();
-	    		   attributes[6] = typeText.getText();
+	    		   attributes[4] = priceText.getText();
+	    		   attributes[6] = statusText.getText();
+	    		   attributes[5] = locationText.getText();
+	    		   attributes[7] = crText.getText();
+	    		   attributes[3] = typeText.getText();
 	    		   
 	    		   Bridge.addNewMedia(conn, attributes);
+	    		   
+	    		   type = attributes[3];
+	    		   
 	    		   addFrame.dispose();
 	    		   done = true;
 	    		   frame.setVisible(true);
