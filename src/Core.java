@@ -16,15 +16,12 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
 import DatabaseBridge.Bridge;
-import media.MediaItem;
 
 public class Core {
 	
-	public static MediaCollection media;
 	public static OrderCollection order;
 	
 	public static void main(String[] args) {
-		media = new MediaCollection();
 		Connection conn = Bridge.initializeDB();
 		order = new OrderCollection();
 		JFrame frame = new JFrame("Database Interface");
@@ -81,7 +78,7 @@ public class Core {
 			   }
 		   });
 		   
-		String[] columnNames = {"MediaID", "Name", "Year", "Status", "Location", "Certificate", "Type"};
+		String[] columnNames = {"MediaID", "Name", "Year", "Type", "Price", "Location", "Status", "Certificate"};
 		
 		DefaultTableModel model = new DefaultTableModel();
 		JTable table = new JTable(model);
