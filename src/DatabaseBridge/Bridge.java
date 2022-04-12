@@ -164,6 +164,6 @@ public class Bridge {
     	} catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-    	return ID;
+    	return ID + 1;
     }
 }

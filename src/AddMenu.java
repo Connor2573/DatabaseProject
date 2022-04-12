@@ -47,12 +47,14 @@ public class AddMenu {
 	       addFrame.setSize(600,400);
 	       String[] types = { "BOOK", "MOVIE", "ALBUM" };
 	       
+	       JComboBox<String> typeCombo = new JComboBox<String>(types);
+	       typeCombo.addActionListener((ActionListener) this);
+	       
 	       JPanel mainPanel = new JPanel();
 	       JPanel mediaIDPanel = new JPanel();
 	       JPanel NamePanel = new JPanel();
 	       JPanel yearPanel = new JPanel();
 	       JPanel statusPanel = new JPanel();
-	       JComboBox<String> typeCombo = new JComboBox<String>(types);
 	       JPanel locationPanel = new JPanel();
 	       JPanel crPanel = new JPanel();
 	       JPanel donePanel = new JPanel();
@@ -74,11 +76,11 @@ public class AddMenu {
 	       locationPanel.add(locationText);
 	       crPanel.add(crText);
 	       
+	       mainPanel.add(typeCombo);
 	       mainPanel.add(mediaIDPanel);
 	       mainPanel.add(NamePanel);
 	       mainPanel.add(yearPanel);
 	       mainPanel.add(statusPanel);
-	       mainPanel.add(typeCombo);
 	       mainPanel.add(locationPanel);
 	       mainPanel.add(crPanel);
 	       
@@ -143,10 +145,6 @@ public class AddMenu {
 	
 	private String getCR() {
 		return attributes[6];
-	}
-	
-	private MediaType getMediaType() {
-		return type;
 	}
 	
 	public boolean isDone() {
