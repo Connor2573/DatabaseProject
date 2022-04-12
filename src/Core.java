@@ -38,7 +38,7 @@ public class Core {
 		   
 		JTextField search = new JTextField("Entry", 8);
 		JButton finalS = new JButton("Search");
-		JButton update = new JButton("Update");
+		JButton update = new JButton("Show all media");
 		JButton addButton = new JButton("Add New Media");
 		JButton orderButton = new JButton("Order Media");
 		JButton viewOrdersButton = new JButton("View Orders");

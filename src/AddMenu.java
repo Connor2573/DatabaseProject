@@ -46,8 +46,8 @@ public class AddMenu {
 		
 		String getType = (String) JOptionPane.showInputDialog(
 	                null,
-	                "What fruit do you like the most?",
-	                "Choose Fruit",
+	                "What type are you adding?",
+	                "Choose Type",
 	                JOptionPane.QUESTION_MESSAGE,
 	                null,
 	                optionsToChoose,
