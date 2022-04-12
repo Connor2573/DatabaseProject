@@ -5,6 +5,7 @@ import java.sql.Connection;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -23,11 +24,10 @@ public class AddMenu {
 	private String[] attributes = new String[7];
 	private boolean EditMode = false;
 	private boolean done = false;
-	private MediaType type;
 	private Connection conn;
 	
 	public AddMenu(JFrame frame, Connection conn) {
-		String[] defaults = {"MediaID", "Name", "2022", "Status", "Location", "Certificate", "Type"};
+		String[] defaults = {String.valueOf(Bridge.GetNextMediaID(conn)), "Name", "2022", "Type", "Price (INT)", "Location", "Status", "Certificate"};
 		this.conn = conn;
 		MakeMenu(frame, defaults);
 	}
@@ -45,13 +45,14 @@ public class AddMenu {
 	       addFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	       addFrame.setLayout(new BoxLayout(addFrame.getContentPane(), BoxLayout.Y_AXIS));
 	       addFrame.setSize(600,400);
+	       String[] types = { "BOOK", "MOVIE", "ALBUM" };
 	       
 	       JPanel mainPanel = new JPanel();
 	       JPanel mediaIDPanel = new JPanel();
 	       JPanel NamePanel = new JPanel();
 	       JPanel yearPanel = new JPanel();
 	       JPanel statusPanel = new JPanel();
-	       JPanel typePanel = new JPanel();
+	       JComboBox<String> typeCombo = new JComboBox<String>(types);
 	       JPanel locationPanel = new JPanel();
 	       JPanel crPanel = new JPanel();
 	       JPanel donePanel = new JPanel();
@@ -70,7 +71,6 @@ public class AddMenu {
 	       NamePanel.add(nameText);
 	       yearPanel.add(yearText);
 	       statusPanel.add(statusText);
-	       typePanel.add(typeText);
 	       locationPanel.add(locationText);
 	       crPanel.add(crText);
 	       
@@ -78,7 +78,7 @@ public class AddMenu {
 	       mainPanel.add(NamePanel);
 	       mainPanel.add(yearPanel);
 	       mainPanel.add(statusPanel);
-	       mainPanel.add(typePanel);
+	       mainPanel.add(typeCombo);
 	       mainPanel.add(locationPanel);
 	       mainPanel.add(crPanel);
 	       

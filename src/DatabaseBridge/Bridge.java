@@ -152,4 +152,18 @@ public class Bridge {
             System.out.println(e.getMessage());
         }
     }
+    
+    private static String getMediaIDSQL = "SELECT MAX(MediaID) FROM MEDIA_ITEM;";
+    
+    public static int GetNextMediaID(Connection conn) {
+    	int ID = -1;
+    	try {
+    		Statement stmt = conn.createStatement();
+    		ResultSet rs = stmt.executeQuery(getMediaIDSQL);   		
+    		ID = rs.getInt(1);
+    	} catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    	return ID;
+    }
 }
