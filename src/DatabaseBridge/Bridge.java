@@ -158,8 +158,10 @@ public class Bridge {
     	int ID = -1;
     	try {
     		Statement stmt = conn.createStatement();
-    		ResultSet rs = stmt.executeQuery(getMediaIDSQL);   		
-    		ID = rs.getInt(1);
+    		ResultSet rs = stmt.executeQuery(getMediaIDSQL);
+    		if (rs.next()) {
+    			ID = rs.getInt("MAX(MediaID)");
+    		}
     	} catch (SQLException e) {
             System.out.println(e.getMessage());
         }

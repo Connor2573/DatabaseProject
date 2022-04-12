@@ -27,8 +27,8 @@ public class AddMenu {
 	private Connection conn;
 	
 	public AddMenu(JFrame frame, Connection conn) {
-		String[] defaults = {String.valueOf(Bridge.GetNextMediaID(conn)), "Name", "2022", "Type", "0.00", "Location", "Status", "Certificate"};
 		this.conn = conn;
+		String[] defaults = {String.valueOf(Bridge.GetNextMediaID(conn)), "Name", "2022", "Type", "0.00", "Location", "Status", "Certificate"};
 		MakeMenu(frame, defaults);
 	}
 	public AddMenu(JFrame frame, String[] defaults, Connection conn) {
@@ -45,10 +45,9 @@ public class AddMenu {
 	       addFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	       addFrame.setLayout(new BoxLayout(addFrame.getContentPane(), BoxLayout.Y_AXIS));
 	       addFrame.setSize(600,400);
-	       String[] types = { "BOOK", "MOVIE", "ALBUM" };
+	       String[] types = { "BOOK", "MOVIE", "ALBUM", "TRACK" };
 	       
 	       JComboBox<String> typeCombo = new JComboBox<String>(types);
-	       typeCombo.addActionListener((ActionListener) this);
 	       
 	       JPanel mainPanel = new JPanel();
 	       JPanel mediaIDPanel = new JPanel();
@@ -67,7 +66,6 @@ public class AddMenu {
 	       JTextField statusText = new JTextField(defaults[6], 8);
 	       JTextField locationText = new JTextField(defaults[5], 7);
 	       JTextField crText = new JTextField(defaults[7]);
-	       JTextField typeText = new JTextField(defaults[3], 8);
 	       JButton doneButton = new JButton("Done");
 	       JButton deleteButton = new JButton("Delete");
 	       
@@ -88,6 +86,32 @@ public class AddMenu {
 	       mainPanel.add(crPanel);
 	       mainPanel.add(pricePanel);
 	       
+	       typeCombo.addActionListener(new ActionListener() {
+	    	   public void actionPerformed(ActionEvent e) {
+	    		   JComboBox temp = (JComboBox)e.getSource();
+	    		   String type = (String)temp.getSelectedItem();
+	    		   JPanel itemPanel = new JPanel();
+	    		   if (type.equals("BOOK")) {
+	    			   JTextField AuthorName = new JTextField("AuthorName", 8);
+	    			   itemPanel.add(AuthorName);
+	    		   } else if (type.equals("MOVIE")) {
+	    			   JTextField LeadActor = new JTextField("LeadActor", 8);
+	    			   itemPanel.add(LeadActor);
+	    		   } else if (type.equals("ALBUM")) {
+	    			   JTextField Artist = new JTextField("Artist", 8);
+	    			   itemPanel.add(Artist);
+	    		   } else if (type.equals("TRACK")) {
+	    			   JTextField TrackName = new JTextField("TrackName", 8);
+	    			   itemPanel.add(TrackName);
+	    		   }
+	    		   mainPanel.add(itemPanel);
+	    		   itemPanel.setVisible(true);
+	    		   mainPanel.revalidate();
+	    		   mainPanel.repaint();
+
+	    	   }
+	       });
+	       
 	       doneButton.addActionListener(new ActionListener() {
 	    	   @Override
 	    	   public void actionPerformed(ActionEvent e) {
@@ -98,11 +122,11 @@ public class AddMenu {
 	    		   attributes[6] = statusText.getText();
 	    		   attributes[5] = locationText.getText();
 	    		   attributes[7] = crText.getText();
-	    		   attributes[3] = typeText.getText();
+	    		   //attributes[3] = typeText.getText();
 	    		   
 	    		   Bridge.addNewMedia(conn, attributes);
 	    		   
-	    		   type = attributes[3];
+	    		   //type = attributes[3];
 	    		   
 	    		   addFrame.dispose();
 	    		   done = true;
