@@ -51,6 +51,32 @@ public class Bridge {
     	}
     	return success;
     }
+    private static String getMediaItemsSQL = "Select * From MEDIA_ITEM;";
+    
+    public static ArrayList<String[]> GetAllMediaItems(Connection conn) {
+    	ArrayList<String[]> rows = new ArrayList<String[]>();
+    	try {
+        	Statement stmt = conn.createStatement();
+        	ResultSet rs = stmt.executeQuery(getMediaItemsSQL);
+        	ResultSetMetaData rsmd = rs.getMetaData();
+        	int columnCount = rsmd.getColumnCount();
+        	while (rs.next()) {
+        		String[] row = new String[columnCount];
+        		row[0] = ""+rs.getInt(1);
+        		row[1] = rs.getString(2);
+        		row[2] = ""+rs.getInt(3);
+        		row[3] = rs.getString(4);
+        		row[4] = ""+rs.getDouble(5);
+        		row[5] = rs.getString(6);
+        		row[6] = rs.getString(7);
+        		row[7] = rs.getString(8);
+        		rows.add(row);
+        	}
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    	return rows;
+    }
     
     private static String albumSql = "Insert Into ALBUM (AlbumID, MediaID, Artist, Genre, ContentRating) values(?, ?, ?, ?, ?);";
 	
@@ -116,34 +142,11 @@ public class Bridge {
     	}
     }
     
-    private static String getMediaItemsSQL = "Select * From MEDIA_ITEM;";
-    
-    public static ArrayList<String[]> GetAllMediaItems(Connection conn) {
-    	ArrayList<String[]> rows = new ArrayList<String[]>();
-    	try {
-        	Statement stmt = conn.createStatement();
-        	ResultSet rs = stmt.executeQuery(getMediaItemsSQL);
-        	ResultSetMetaData rsmd = rs.getMetaData();
-        	int columnCount = rsmd.getColumnCount();
-        	while (rs.next()) {
-        		String[] row = new String[columnCount];
-        		row[0] = ""+rs.getInt(1);
-        		row[1] = rs.getString(2);
-        		row[2] = ""+rs.getInt(3);
-        		row[3] = rs.getString(4);
-        		row[4] = ""+rs.getDouble(5);
-        		row[5] = rs.getString(6);
-        		row[6] = rs.getString(7);
-        		row[7] = rs.getString(8);
-        		rows.add(row);
-        	}
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-    	return rows;
-    }
-    
     private static String removeSQL = "DELETE FROM MEDIA_ITEM WHERE MediaID = ?";
+    private static String removeMovieSQL = "DELETE FROM MOVIE WHERE MediaID = ?";
+    private static String removeBookSQL = "DELETE FROM BOOK WHERE MediaID = ?";
+    private static String removeTrackSQL = "DELETE FROM TRACK WHERE TrackID = ?";
+    private static String removeAlbumSQL = "DELETE FROM ALBUM WHERE MediaID = ?";
     
     public static void RemoveMediaWithID(Connection conn, int id) {
     	try {
@@ -153,5 +156,54 @@ public class Bridge {
     	} catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+    	RemoveMovieWithID(conn, id);
+    	RemoveBookWithID(conn, id);
+    	RemoveAlbumWithID(conn, id);
+    }
+    
+    public static void RemoveMovieWithID(Connection conn, int id) {
+    	try {
+    		PreparedStatement ps = conn.prepareStatement(removeMovieSQL);
+    		ps.setInt(1, id);
+    		ps.executeUpdate();
+    	} catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    public static void RemoveBookWithID(Connection conn, int id) {
+    	try {
+    		PreparedStatement ps = conn.prepareStatement(removeBookSQL);
+    		ps.setInt(1, id);
+    		ps.executeUpdate();
+    	} catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    public static void RemoveTrackWithID(Connection conn, int id) {
+    	try {
+    		PreparedStatement ps = conn.prepareStatement(removeTrackSQL);
+    		ps.setInt(1, id);
+    		ps.executeUpdate();
+    	} catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    public static void RemoveAlbumWithID(Connection conn, int id) {
+    	try {
+    		PreparedStatement ps = conn.prepareStatement(removeAlbumSQL);
+    		ps.setInt(1, id);
+    		ps.executeUpdate();
+    	} catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    public static void PrintArgs(String[] args) {
+    	for (String x: args) {
+    		System.out.println(x);
+    	}
     }
 }

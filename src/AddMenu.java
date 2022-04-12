@@ -41,17 +41,21 @@ public class AddMenu {
 	
 	
 	private void MakeMenu(JFrame frame, String[] defaults) {
-		
-		String[] optionsToChoose = {"BOOK", "TRACK", "MOVIE", "ALBUM"};
-		
-		String getType = (String) JOptionPane.showInputDialog(
-	                null,
-	                "What type are you adding?",
-	                "Choose Type",
-	                JOptionPane.QUESTION_MESSAGE,
-	                null,
-	                optionsToChoose,
-	                optionsToChoose[0]);
+		String getType = null;
+		if(!EditMode) {
+			String[] optionsToChoose = {"BOOK", "TRACK", "MOVIE", "ALBUM"};
+			
+			getType = (String) JOptionPane.showInputDialog(
+		                null,
+		                "What type are you adding?",
+		                "Choose Type",
+		                JOptionPane.QUESTION_MESSAGE,
+		                null,
+		                optionsToChoose,
+		                optionsToChoose[0]);
+		} else {
+			getType = defaults[3];
+		}
 		
 		JFrame addFrame = new JFrame("Adding");
 	       addFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -129,13 +133,16 @@ public class AddMenu {
 				   movieAttributes.add(directorName);
 				   movieAttributes.add(genreTxt);
 				   movieAttributes.add(lengthTxt);
+				   type = MediaType.MOVIE;
 				   mainPanel.add(movieAttributes);
 			   } else if(getType.contains("ALBUM")) {
 				   albumAttributes.add(artistTxt);
+				   type = MediaType.ALBUM;
 				   mainPanel.add(albumAttributes);
 			   } else if(getType.contains("BOOK")) {
 				   bookAttributes.add(authorName);
 				   bookAttributes.add(publisherName);
+				   type = MediaType.BOOK;
 				   mainPanel.add(bookAttributes);
 			   }
 	       } else if(getType.contains("TRACK")) {
@@ -143,15 +150,14 @@ public class AddMenu {
 	    	   trackAttributes.add(albumIDTxt);
 	    	   trackAttributes.add(trackNameTxt);
 	    	   trackAttributes.add(lengthTxt);
-	    	   
+	    	   type = MediaType.TRACK;
 	    	   mainPanel.add(trackAttributes);
 		   }
 	       
 	       doneButton.addActionListener(new ActionListener() {
 	    	   @Override
 	    	   public void actionPerformed(ActionEvent e) {
-	    		   String strType = getType;
-	    		   if(!strType.contains("TRACK")) {
+	    		   if(type != MediaType.TRACK) {
 		    		   attributes[0] = mediaID.getText();
 		    		   attributes[1] = nameText.getText();
 		    		   attributes[2] = yearText.getText();
@@ -159,9 +165,9 @@ public class AddMenu {
 		    		   attributes[6] = statusText.getText();
 		    		   attributes[5] = locationText.getText();
 		    		   attributes[7] = crText.getText();
-		    		   attributes[3] = typeText.getText();
+		    		   attributes[3] = typeText.getText().toUpperCase();
 		    		   Bridge.addNewMedia(conn, attributes);
-		    		   if(getType.contains("MOVIE")) {
+		    		   if(type == MediaType.MOVIE) {
 		    			   String[] attr = new String[6];
 		    			   attr[0] = mediaID.getText();
 		    			   attr[1] = leadActor.getText();
@@ -171,7 +177,7 @@ public class AddMenu {
 		    			   attr[5] = lengthTxt.getText();
 		    			   
 		    			   Bridge.addMovie(conn, attr);
-		    		   } else if(getType.contains("ALBUM")) {
+		    		   } else if(type == MediaType.ALBUM) {
 		    			   String[] attr = new String[5];
 		    			   attr[0] = albumIDTxt.getText();
 		    			   attr[1] = mediaID.getText();
@@ -179,7 +185,7 @@ public class AddMenu {
 		    			   attr[3] = genreTxt.getText();
 		    			   attr[4] = crText.getText();
 		    			   Bridge.addAlbum(conn, attr);
-		    		   } else if(getType.contains("BOOK")) {
+		    		   } else if(type == MediaType.BOOK) {
 		    			   String[] attr = new String[5];
 		    			   attr[0] = mediaID.getText();
 		    			   attr[1] = authorName.getText();
