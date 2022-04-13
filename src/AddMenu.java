@@ -37,6 +37,11 @@ public class AddMenu {
 		this.conn = conn;
 		MakeMenu(frame, defaults);
 	}
+	public AddMenu(JFrame frame, String[] defaults, String[] specDefaults, Connection conn) {
+		EditMode = true;
+		this.conn = conn;
+		MakeMenu(frame, defaults);
+	}
 	
 	
 	

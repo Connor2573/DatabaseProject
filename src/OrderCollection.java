@@ -45,16 +45,16 @@ public class OrderCollection {
 		for (int i = 0; i < target.getQuantity(); i++) {
 			switch(mt) {
 				case "Book":
-					Core.media.Add(new Book(targetItem.getName(), targetItem.getGenre(), targetItem.getYear(), targetItem.getLength(), targetItem.getType(), targetItem.getLocation()));
+					//Bridge.Add(new Book(targetItem.getName(), targetItem.getGenre(), targetItem.getYear(), targetItem.getLength(), targetItem.getType(), targetItem.getLocation()));
 					break;
 				case "Movie":
-					Core.media.Add(new Movie(targetItem.getName(), targetItem.getGenre(), targetItem.getYear(), targetItem.getLength(), targetItem.getType(), targetItem.getLocation(), ((Movie)targetItem).getContentRating()));
+					//Core.media.Add(new Movie(targetItem.getName(), targetItem.getGenre(), targetItem.getYear(), targetItem.getLength(), targetItem.getType(), targetItem.getLocation(), ((Movie)targetItem).getContentRating()));
 					break;
 				case "Track":
-					Core.media.Add(new Track(targetItem.getName(), targetItem.getGenre(), targetItem.getYear(), targetItem.getLength(), targetItem.getType(), targetItem.getLocation(), ((Track)targetItem).getContentRating()));
+					//Core.media.Add(new Track(targetItem.getName(), targetItem.getGenre(), targetItem.getYear(), targetItem.getLength(), targetItem.getType(), targetItem.getLocation(), ((Track)targetItem).getContentRating()));
 					break;
 				case "Album":
-					Core.media.Add(new Album(targetItem.getName(), targetItem.getGenre(), targetItem.getYear(), targetItem.getLength(), targetItem.getType(), targetItem.getLocation()));
+					//Core.media.Add(new Album(targetItem.getName(), targetItem.getGenre(), targetItem.getYear(), targetItem.getLength(), targetItem.getType(), targetItem.getLocation()));
 					break; 
 		   }
 		}

@@ -28,7 +28,7 @@ public class Core {
 		JFrame frame = new JFrame("Database Interface");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
-		frame.setSize(1200,800);
+		frame.setSize(1200,1600);
 		   
 		JPanel main = new JPanel();
 		JPanel searchPanel = new JPanel();
@@ -40,6 +40,8 @@ public class Core {
 		JButton addButton = new JButton("Add New Media");
 		JButton orderButton = new JButton("Order Media");
 		JButton viewOrdersButton = new JButton("View Orders");
+		JButton employeeUpdate = new JButton("Show employees");
+		JButton memberUpdate = new JButton("Show members");
 		JButton edit = new JButton("Edit selected Media");
     
 		addPanel.add(addButton);
@@ -47,6 +49,8 @@ public class Core {
 		addPanel.add(viewOrdersButton);
 		addPanel.add(update);
 		addPanel.add(edit);
+		addPanel.add(employeeUpdate);
+		addPanel.add(memberUpdate);
 		
 		searchPanel.add(search);
 		searchPanel.add(finalS);
@@ -92,6 +96,32 @@ public class Core {
 			      TitledBorder.TOP));
 		main.add(tablePanel);
 		
+		String[] employeeCols = {"EmployeeID", "PersonID", "Email"};
+		
+		DefaultTableModel empModel = new DefaultTableModel();
+		JTable empTable = new JTable(empModel);
+		for(String str: employeeCols) {
+			empModel.addColumn(str);
+		}
+		JScrollPane empTablePanel = new JScrollPane(empTable);
+		empTablePanel.setBorder(BorderFactory.createTitledBorder(
+			      BorderFactory.createEtchedBorder(), "Employees", TitledBorder.LEFT,
+			      TitledBorder.TOP));
+		main.add(empTablePanel);
+		
+		String[] memberCols = {"MemberID", "PersonID", "Email", "Address", "PhoneNumber"};
+		
+		DefaultTableModel memberModel = new DefaultTableModel();
+		JTable memberTable = new JTable(memberModel);
+		for(String str: memberCols) {
+			memberModel.addColumn(str);
+		}
+		JScrollPane memberTablePanel = new JScrollPane(memberTable);
+		memberTablePanel.setBorder(BorderFactory.createTitledBorder(
+			      BorderFactory.createEtchedBorder(), "Members", TitledBorder.LEFT,
+			      TitledBorder.TOP));
+		main.add(memberTablePanel);
+		
 		update.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -99,6 +129,28 @@ public class Core {
 				model.setRowCount(0);
 				for(String[] str: items) {
 					model.addRow(str);
+				}
+			}
+		});
+		
+		employeeUpdate.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ArrayList<String[]> items = Bridge.GetEmployeeItems(conn);
+				empModel.setRowCount(0);
+				for(String[] str: items) {
+					empModel.addRow(str);
+				}
+			}
+		});
+		
+		memberUpdate.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ArrayList<String[]> items = Bridge.GetMembersItems(conn);
+				memberModel.setRowCount(0);
+				for(String[] str: items) {
+					memberModel.addRow(str);
 				}
 			}
 		});
@@ -132,7 +184,6 @@ public class Core {
 				}
 				int id = Integer.parseInt(data[0]);
 				String typeStr = data[3];
-				String[] specData = null;
 				MediaType type = MediaType.getMediaType(typeStr);
 				switch(type) {
 					case MOVIE:

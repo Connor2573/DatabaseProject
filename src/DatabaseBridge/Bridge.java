@@ -78,6 +78,74 @@ public class Bridge {
     	return rows;
     }
     
+    private static String getMembersSQL = "Select * From MEMBER;";
+    
+    public static ArrayList<String[]> GetMembersItems(Connection conn) {
+    	ArrayList<String[]> rows = new ArrayList<String[]>();
+    	try {
+        	Statement stmt = conn.createStatement();
+        	ResultSet rs = stmt.executeQuery(getMembersSQL);
+        	ResultSetMetaData rsmd = rs.getMetaData();
+        	int columnCount = rsmd.getColumnCount();
+        	while (rs.next()) {
+        		String[] row = new String[columnCount];
+        		row[0] = ""+rs.getInt(1);
+        		row[1] = ""+rs.getInt(2);
+        		row[2] = rs.getString(3);
+        		row[3] = rs.getString(4);
+        		row[4] = rs.getString(5);
+        		rows.add(row);
+        	}
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    	return rows;
+    }
+    
+    private static String getEmployeeSQL = "Select * From EMPLOYEE;";
+    
+    public static ArrayList<String[]> GetEmployeeItems(Connection conn) {
+    	ArrayList<String[]> rows = new ArrayList<String[]>();
+    	try {
+        	Statement stmt = conn.createStatement();
+        	ResultSet rs = stmt.executeQuery(getEmployeeSQL);
+        	ResultSetMetaData rsmd = rs.getMetaData();
+        	int columnCount = rsmd.getColumnCount();
+        	while (rs.next()) {
+        		String[] row = new String[columnCount];
+        		row[0] = ""+rs.getInt(1);
+        		row[1] = ""+rs.getInt(2);
+        		row[2] = rs.getString(3);
+        		rows.add(row);
+        	}
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    	return rows;
+    }
+    
+    private static String selectMovieSql = "Select * From Movie Where MediaID = ?;";
+    
+    public static String[] getMovieWithID(Connection conn, int id) {
+    	String[] str = null;
+    	try {
+    		PreparedStatement stmt = conn.prepareStatement(selectMovieSql);
+    		stmt.setInt(1, id);
+    		ResultSet rs = stmt.executeQuery();
+    		ResultSetMetaData rsmd = rs.getMetaData();
+    		str = new String[rsmd.getColumnCount()];
+    		str[0] = ""+rs.getInt(1);
+    		str[1] = rs.getString(2);
+    		str[2] = rs.getString(3);
+    		str[3] = rs.getString(4);
+    		str[4] = rs.getString(5);
+    		str[5] = ""+rs.getInt(6);
+    	} catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    	return str;
+    }
+    
     private static String albumSql = "Insert Into ALBUM (AlbumID, MediaID, Artist, Genre, ContentRating) values(?, ?, ?, ?, ?);";
 	
     public static void addAlbum(Connection conn, String[] args) {
