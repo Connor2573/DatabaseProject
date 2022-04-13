@@ -1,5 +1,7 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -12,6 +14,7 @@ import javax.swing.JTable;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
+import DatabaseBridge.Bridge;
 import media.Album;
 import media.Book;
 import media.Movie;
@@ -19,6 +22,7 @@ import media.Track;
 
 public class OrdersTable {
 	public OrdersTable(JFrame frame) {
+		Connection conn = Bridge.initializeDB();
 		JFrame ordersFrame = new JFrame("Orders Table");
 		ordersFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		ordersFrame.setLayout(new BoxLayout(ordersFrame.getContentPane(), BoxLayout.Y_AXIS));
@@ -26,19 +30,17 @@ public class OrdersTable {
 	   
 		JPanel mainPanel = new JPanel();
 		
-		String[] columnNames = {"Order ID", "Name of Order", "Name of Item", "Quantity", "Estimated Date of Arrival"};
+		String[] columnNames = {"Entry ID", "Order ID", "Employee ID", "Media ID", "Price", "Number of Copies", "Order Date", "Estimated Date of Arrival"};
 		
 		DefaultTableModel model = new DefaultTableModel();
 		JTable table = new JTable(model);
 		for(String str: columnNames) {
 			model.addColumn(str);
 		}
-		String[][] orders = Core.order.GetOrders();
-		if (orders.length > 0) {
-			model.setRowCount(0);
-			for(String[] str: orders) {
-				model.addRow(str);
-			}
+		ArrayList<String[]> orders = Bridge.GetAllOrders(conn);
+		model.setRowCount(0);
+		for(String[] str: orders) {
+			model.addRow(str);
 		}
 		JScrollPane tablePanel = new JScrollPane(table);
 		tablePanel.setBorder(BorderFactory.createTitledBorder(

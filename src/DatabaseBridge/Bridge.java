@@ -154,4 +154,53 @@ public class Bridge {
             System.out.println(e.getMessage());
         }
     }
+    
+    private static String getOrdersSQL = "Select * From ORDER_LIST;";
+    
+    public static ArrayList<String[]> GetAllOrders(Connection conn) {
+    	ArrayList<String[]> rows = new ArrayList<String[]>();
+    	try {
+        	Statement stmt = conn.createStatement();
+        	ResultSet rs = stmt.executeQuery(getOrdersSQL);
+        	ResultSetMetaData rsmd = rs.getMetaData();
+        	int columnCount = rsmd.getColumnCount();
+        	while (rs.next()) {
+        		String[] row = new String[columnCount];
+        		row[0] = ""+rs.getInt(1);
+        		row[1] = ""+rs.getInt(2);
+        		row[2] = ""+rs.getInt(3);
+        		row[3] = ""+rs.getInt(4);
+        		row[4] = ""+rs.getDouble(5);
+        		row[5] = ""+rs.getInt(6);
+        		row[6] = rs.getString(7);
+        		row[7] = rs.getString(8);
+        		rows.add(row);
+        	}
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    	return rows;
+    }
+    
+    private static String orderSql = "Insert Into ORDER_LIST (EntryID, OrderID, EmployeeID, MediaID, Price, NumCopies, OrderDate, EstArrivalDate) values(?, ?, ?, ?, ?, ?, ?, ?);";
+	
+    public static boolean addNewOrder(Connection conn, String[] args) {
+    	boolean success = false;
+    	try {
+    		PreparedStatement stmt = conn.prepareStatement(orderSql);
+    		stmt.setInt(1, Integer.parseInt(args[0]));
+    		stmt.setInt(2, Integer.parseInt(args[1]));
+    		stmt.setInt(3, Integer.parseInt(args[2]));
+    		stmt.setInt(4, Integer.parseInt(args[3]));
+    		stmt.setDouble(5, Double.parseDouble(args[4]));
+    		stmt.setInt(6, Integer.parseInt(args[5]));
+    		stmt.setString(7, args[6]);
+    		stmt.setString(8, args[7]);
+    		stmt.executeUpdate();
+    		success = true;
+    	} catch (SQLException e) {
+    		System.out.println(e.getMessage());
+    	}
+    	return success;
+    }
 }

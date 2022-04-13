@@ -20,11 +20,9 @@ import media.MediaItem;
 
 public class Core {
 	
-	public static MediaCollection media;
 	public static OrderCollection order;
 	
 	public static void main(String[] args) {
-		media = new MediaCollection();
 		Connection conn = Bridge.initializeDB();
 		order = new OrderCollection();
 		JFrame frame = new JFrame("Database Interface");
@@ -69,7 +67,7 @@ public class Core {
 			   public void actionPerformed(ActionEvent e) {
 				   frame.setVisible(false);
 				   
-				   OrderMenu om = new OrderMenu(frame);
+				   OrderMenu om = new OrderMenu(frame, conn);
 			   }
 		   });
 		   viewOrdersButton.addActionListener(new ActionListener() {
