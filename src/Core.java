@@ -126,15 +126,30 @@ public class Core {
 			public void actionPerformed(ActionEvent e) {
 				int target = table.getSelectedRow();
 				int cols = columnNames.length;
-				System.out.println(cols);
 				String[] data = new String[cols];
 				for(int i = 0; i < cols; i++) {
 					data[i] = (String) table.getValueAt(target, i);
 				}
 				int id = Integer.parseInt(data[0]);
-				AddMenu em = new AddMenu(frame, data, conn);
+				String typeStr = data[3];
+				String[] specData = null;
+				MediaType type = MediaType.getMediaType(typeStr);
+				switch(type) {
+					case MOVIE:
+						Bridge.RemoveMovieWithID(conn, id);
+						break;
+					case ALBUM:
+						Bridge.RemoveAlbumWithID(conn, id);
+						break;
+					case BOOK:
+						Bridge.RemoveBookWithID(conn, id);
+						break;
+					case TRACK:
+						break;
+				}
 				model.removeRow(target);
 				Bridge.RemoveMediaWithID(conn, id);
+				AddMenu em = new AddMenu(frame, data, conn);
 			}
 		});
 		   
