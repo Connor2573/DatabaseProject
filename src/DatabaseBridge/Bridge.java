@@ -268,6 +268,8 @@ public class Bridge {
     	} catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+    }
+    
     public static void PrintArgs(String[] args) {
     	for (String x: args) {
     		System.out.println(x);
