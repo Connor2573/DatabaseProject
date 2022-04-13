@@ -54,7 +54,7 @@ public class OrdersTable {
 	    	   @Override
 	    	   public void actionPerformed(ActionEvent e) {
 	    		   int target = table.getSelectedRow();
-	    		   Core.order.Activate(Integer.valueOf(table.getValueAt(target, 0).toString()));
+	    		   Bridge.activateOrder(Integer.valueOf(table.getValueAt(target, 0).toString()), Integer.valueOf(table.getValueAt(target, 3).toString()), conn);
 	    		   model.removeRow(target);
 	    	   }
 	    });

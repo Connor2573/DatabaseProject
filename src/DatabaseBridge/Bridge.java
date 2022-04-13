@@ -203,4 +203,24 @@ public class Bridge {
     	}
     	return success;
     }
+    
+    private static String activateItemSQL = "UPDATE MEDIA_ITEM SET Status='available' WHERE MediaID = ?";
+    private static String removeOrderSQL = "DELETE FROM ORDER_LIST WHERE entryID = ?";
+    
+    public static void activateOrder(int entryID, int mediaID, Connection conn) {
+    	try {
+    		PreparedStatement ps = conn.prepareStatement(activateItemSQL);
+    		ps.setInt(1, mediaID);
+    		ps.executeUpdate();
+    	} catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    	try {
+    		PreparedStatement ps = conn.prepareStatement(removeOrderSQL);
+    		ps.setInt(1, entryID);
+    		ps.executeUpdate();
+    	} catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }
