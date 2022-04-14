@@ -131,6 +131,7 @@ public class AddMenu {
 				   type = MediaType.MOVIE;
 				   mainPanel.add(movieAttributes);
 			   } else if(getType.contains("ALBUM")) {
+				   albumAttributes.add(albumIDTxt);
 				   albumAttributes.add(artistTxt);
 				   type = MediaType.ALBUM;
 				   mainPanel.add(albumAttributes);
@@ -171,6 +172,22 @@ public class AddMenu {
 		    			   attr[4] = crText.getText();
 		    			   attr[5] = lengthTxt.getText();
 		    			   
+		    			   if (!Bridge.getContentCreator(conn, attr[1])) {
+		    				   String[] personVals = new String[2];
+		    				   personVals[0] = String.valueOf(Integer.valueOf(attributes[0]) * Integer.valueOf(attributes[0]));
+		    				   personVals[1] = attr[1];
+		    				   Bridge.addPerson(conn, personVals);
+		    				   Bridge.addContentCreator(conn, Integer.valueOf(personVals[0]), Integer.valueOf(personVals[0]));
+		    			   }
+		    			   
+		    			   if (!Bridge.getContentCreator(conn, attr[2])) {
+		    				   String[] personVals = new String[2];
+		    				   personVals[0] = String.valueOf(Integer.valueOf(attributes[0]));
+		    				   personVals[1] = attr[2];
+		    				   Bridge.addPerson(conn, personVals);
+		    				   Bridge.addContentCreator(conn, Integer.valueOf(personVals[0]), Integer.valueOf(personVals[0]));
+		    			   }
+		    			   
 		    			   Bridge.addMovie(conn, attr);
 		    		   } else if(type == MediaType.ALBUM) {
 		    			   String[] attr = new String[5];
@@ -179,6 +196,15 @@ public class AddMenu {
 		    			   attr[2] = artistTxt.getText();
 		    			   attr[3] = genreTxt.getText();
 		    			   attr[4] = crText.getText();
+		    			   
+		    			   if (!Bridge.getContentCreator(conn, attr[2])) {
+		    				   String[] personVals = new String[2];
+		    				   personVals[0] = String.valueOf(Integer.valueOf(attributes[0]));
+		    				   personVals[1] = attr[2];
+		    				   Bridge.addPerson(conn, personVals);
+		    				   Bridge.addContentCreator(conn, Integer.valueOf(personVals[0]), Integer.valueOf(personVals[0]));
+		    			   }
+		    			   
 		    			   Bridge.addAlbum(conn, attr);
 		    		   } else if(type == MediaType.BOOK) {
 		    			   String[] attr = new String[5];
@@ -187,6 +213,14 @@ public class AddMenu {
 		    			   attr[2] = publisherName.getText();
 		    			   attr[3] = genreTxt.getText();
 		    			   attr[4] = lengthTxt.getText();
+		    			   
+		    			   if (!Bridge.getContentCreator(conn, attr[1])) {
+		    				   String[] personVals = new String[2];
+		    				   personVals[0] = String.valueOf(Integer.valueOf(attributes[0]));
+		    				   personVals[1] = attr[1];
+		    				   Bridge.addPerson(conn, personVals);
+		    				   Bridge.addContentCreator(conn, Integer.valueOf(personVals[0]), Integer.valueOf(personVals[0]));
+		    			   }
 		    			   
 		    			   Bridge.addBook(conn, attr);
 		    		   }

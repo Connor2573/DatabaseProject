@@ -433,20 +433,19 @@ public class Bridge {
         }
     }
     
-    private static String getContentCreatorSql = "Select * From CONTENT_CREATOR Where CreatorID = ?;";
+    private static String getContentCreatorSql = "Select * From CONTENT_CREATOR JOIN PERSON ON CONTENT_CREATOR.PersonID = PERSON.PersonID Where PERSON.Name = ?;";
     
-    public static int[] getContentCreator(Connection conn, int id) {
-    	int[] data = new int[2];
+    public static boolean getContentCreator(Connection conn, String name) {
+    	boolean empty = false;
     	try {
     		PreparedStatement ps = conn.prepareStatement(getContentCreatorSql);
-    		ps.setInt(1, id);
+    		ps.setString(1, name);
     		ResultSet rs = ps.executeQuery();
-        	data[0] = rs.getInt(1);
-        	data[1] = rs.getInt(2);
+    		empty = rs.next();
     	} catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-    	return data;
+    	return empty;
     }
     
     private static String addContentCreatorSql = "Insert into CONTENT_CREATOR (CreatorID, PersonID) values(?, ?);";

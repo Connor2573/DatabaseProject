@@ -306,11 +306,13 @@ public class Core {
 		});
 		
 		
-		
 		   
 		main.add(memberPanel);
 		main.add(employeePanel);
-		frame.getContentPane().add(main);
+		
+		JScrollPane corePanel = new JScrollPane(main);
+		
+		frame.getContentPane().add(corePanel);
 		frame.setVisible(true);
 		
 	}
