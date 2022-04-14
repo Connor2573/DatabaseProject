@@ -32,7 +32,9 @@ public class Core {
 		   
 		JPanel main = new JPanel();
 		JPanel searchPanel = new JPanel();
-		JPanel addPanel = new JPanel();
+		JPanel uiPanel = new JPanel();
+		JPanel employeePanel = new JPanel();
+		JPanel memberPanel = new JPanel();
 		   
 		JTextField search = new JTextField("Entry", 8);
 		JButton finalS = new JButton("Search");
@@ -42,21 +44,35 @@ public class Core {
 		JButton viewOrdersButton = new JButton("View Orders");
 		JButton employeeUpdate = new JButton("Show employees");
 		JButton memberUpdate = new JButton("Show members");
-		JButton edit = new JButton("Edit selected Media");
+		JButton editMediaItem = new JButton("Edit selected Media");
+		JButton editEmployee = new JButton("Edit selected employee");
+		JButton editMember = new JButton("Edit selected member");
+		JButton deleteEmployee = new JButton("Delete selected employee");
+		JButton deleteMember = new JButton("Delete selected member");
+		JButton addEmployee = new JButton("Add Employee");
+		JButton addMember = new JButton("Add Member");
     
-		addPanel.add(addButton);
-		addPanel.add(orderButton);
-		addPanel.add(viewOrdersButton);
-		addPanel.add(update);
-		addPanel.add(edit);
-		addPanel.add(employeeUpdate);
-		addPanel.add(memberUpdate);
+		uiPanel.add(addButton);
+		uiPanel.add(orderButton);
+		uiPanel.add(viewOrdersButton);
+		uiPanel.add(update);
+		uiPanel.add(editMediaItem);
+		
+		employeePanel.add(employeeUpdate);
+		employeePanel.add(addEmployee);
+		employeePanel.add(editEmployee);
+		employeePanel.add(deleteEmployee);
+		
+		memberPanel.add(memberUpdate);
+		memberPanel.add(addMember);
+		memberPanel.add(editMember);
+		memberPanel.add(deleteMember);
 		
 		searchPanel.add(search);
 		searchPanel.add(finalS);
 		   
 		main.add(searchPanel);
-		main.add(addPanel);
+		main.add(uiPanel);
 		   
 		   addButton.addActionListener(new ActionListener() {
 			   @Override
@@ -107,7 +123,7 @@ public class Core {
 		empTablePanel.setBorder(BorderFactory.createTitledBorder(
 			      BorderFactory.createEtchedBorder(), "Employees", TitledBorder.LEFT,
 			      TitledBorder.TOP));
-		main.add(empTablePanel);
+		employeePanel.add(empTablePanel);
 		
 		String[] memberCols = {"MemberID", "PersonID", "Email", "Address", "PhoneNumber"};
 		
@@ -120,7 +136,7 @@ public class Core {
 		memberTablePanel.setBorder(BorderFactory.createTitledBorder(
 			      BorderFactory.createEtchedBorder(), "Members", TitledBorder.LEFT,
 			      TitledBorder.TOP));
-		main.add(memberTablePanel);
+		memberPanel.add(memberTablePanel);
 		
 		update.addActionListener(new ActionListener() {
 			@Override
@@ -173,7 +189,7 @@ public class Core {
 			}
 		});
 		
-		edit.addActionListener(new ActionListener() {
+		editMediaItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int target = table.getSelectedRow();
@@ -203,7 +219,97 @@ public class Core {
 				AddMenu em = new AddMenu(frame, data, conn);
 			}
 		});
+		
+		editEmployee.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				frame.setVisible(false);
+				int target = empTable.getSelectedRow();
+				int cols = employeeCols.length;
+				String[] data = new String[cols];
+				for(int i = 0; i < cols; i++) {
+					data[i] = (String) empTable.getValueAt(target, i);
+				}
+				int id = Integer.parseInt(data[0]);
+				int specId = Integer.parseInt(data[1]);
+				empModel.removeRow(target);
+				String name = Bridge.getPerson(conn, specId)[1];
+				AddEmpMenu aem = new AddEmpMenu(frame, data, name, conn);
+			}
+		});
+		
+		deleteEmployee.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int target = empTable.getSelectedRow();
+				int cols = employeeCols.length;
+				String[] data = new String[cols];
+				for(int i = 0; i < cols; i++) {
+					data[i] = (String) empTable.getValueAt(target, i);
+				}
+				int id = Integer.parseInt(data[0]);
+				int specId = Integer.parseInt(data[1]);
+				empModel.removeRow(target);
+				Bridge.removePerson(conn, specId);
+				Bridge.removeEmployee(conn, id);
+			}
+		});
+		
+		addEmployee.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				frame.setVisible(false);
+				AddEmpMenu aem = new AddEmpMenu(frame, conn);
+			}
+		});
+		
+		editMember.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				frame.setVisible(false);
+				int target = memberTable.getSelectedRow();
+				int cols = memberCols.length;
+				String[] data = new String[cols];
+				for(int i = 0; i < cols; i++) {
+					data[i] = (String) memberTable.getValueAt(target, i);
+				}
+				int personId = Integer.parseInt(data[1]);
+				memberModel.removeRow(target);
+				String name = Bridge.getPerson(conn, personId)[1];
+				AddMemMenu aem = new AddMemMenu(frame, data, name, conn);
+			}
+		});
+		
+		deleteMember.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int target = memberTable.getSelectedRow();
+				int cols = memberCols.length;
+				String[] data = new String[cols];
+				for(int i = 0; i < cols; i++) {
+					data[i] = (String) memberTable.getValueAt(target, i);
+				}
+				int id = Integer.parseInt(data[0]);
+				int specId = Integer.parseInt(data[1]);
+				memberModel.removeRow(target);
+				Bridge.removePerson(conn, specId);
+				Bridge.removeMember(conn, id);
+			}
+		});
+		
+		addMember.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				frame.setVisible(false);
+				AddMemMenu aem = new AddMemMenu(frame, conn);
+			}
+		});
+		
+		
+		
 		   
+		main.add(memberPanel);
+		main.add(employeePanel);
 		frame.getContentPane().add(main);
 		frame.setVisible(true);
 		

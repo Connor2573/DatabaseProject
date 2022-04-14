@@ -338,6 +338,101 @@ public class Bridge {
         }
     }
     
+    private static String addEmployeeSql = "Insert into EMPLOYEE (EmployeeID, PersonID, Email) values(?, ?, ?);";
+    
+    public static void addEmployee(Connection conn, String[] vals) {
+    	try {
+    		PreparedStatement ps = conn.prepareStatement(addEmployeeSql);
+    		ps.setInt(1, Integer.parseInt(vals[0]));
+    		ps.setInt(2, Integer.parseInt(vals[1]));
+    		ps.setString(3, vals[2]);
+    		ps.executeUpdate();
+    	} catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    private static String addPersonSql = "Insert into PERSON (PersonID, Name) values(?, ?);";
+    
+    public static void addPerson(Connection conn, String[] vals) {
+    	try {
+    		PreparedStatement ps = conn.prepareStatement(addPersonSql);
+    		ps.setInt(1, Integer.parseInt(vals[0]));
+    		ps.setString(2, vals[1]);
+    		ps.executeUpdate();
+    	} catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    private static String removeEmployeeSql = "DELETE FROM EMPLOYEE where EmployeeID = ?;";
+    
+    public static void removeEmployee(Connection conn, int id) {
+    	try {
+    		PreparedStatement ps = conn.prepareStatement(removeEmployeeSql);
+    		ps.setInt(1, id);
+    		ps.executeUpdate();
+    	} catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    private static String removePersonSql = "DELETE FROM PERSON where PersonID = ?;";
+    
+    public static void removePerson(Connection conn, int id) {
+    	try {
+    		PreparedStatement ps = conn.prepareStatement(removePersonSql);
+    		ps.setInt(1, id);
+    		ps.executeUpdate();
+    	} catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    private static String getPersonSql = "Select * From PERSON Where PersonID = ?;";
+    
+    public static String[] getPerson(Connection conn, int id) {
+    	String[] data = new String[2];
+    	try {
+    		PreparedStatement ps = conn.prepareStatement(getPersonSql);
+    		ps.setInt(1, id);
+    		ResultSet rs = ps.executeQuery();
+        	data[0] = ""+rs.getInt(1);
+        	data[1] = rs.getString(2);
+    	} catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    	return data;
+    }
+    
+    private static String addMemberSql = "Insert into MEMBER (MemberID, PersonID, Email, Address, PhoneNumber) values(?, ?, ?, ?, ?);";
+    
+    public static void addMember(Connection conn, String[] vals) {
+    	try {
+    		PreparedStatement ps = conn.prepareStatement(addMemberSql);
+    		ps.setInt(1, Integer.parseInt(vals[0]));
+    		ps.setInt(2, Integer.parseInt(vals[1]));
+    		ps.setString(3, vals[2]);
+    		ps.setString(4, vals[3]);
+    		ps.setString(5, vals[4]);
+    		ps.executeUpdate();
+    	} catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    private static String removeMemberSql = "DELETE FROM MEMBER where MemberID = ?;";
+    
+    public static void removeMember(Connection conn, int id) {
+    	try {
+    		PreparedStatement ps = conn.prepareStatement(removeMemberSql);
+    		ps.setInt(1, id);
+    		ps.executeUpdate();
+    	} catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
     public static void PrintArgs(String[] args) {
     	for (String x: args) {
     		System.out.println(x);

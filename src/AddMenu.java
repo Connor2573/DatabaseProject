@@ -18,9 +18,6 @@ import media.Track;
 
 
 public class AddMenu {
-
-	private static String[] trackAttr = {};
-
 	private String[] attributes = new String[8];
 	private boolean EditMode = false;
 	private boolean done = false;
@@ -37,13 +34,6 @@ public class AddMenu {
 		this.conn = conn;
 		MakeMenu(frame, defaults);
 	}
-	public AddMenu(JFrame frame, String[] defaults, String[] specDefaults, Connection conn) {
-		EditMode = true;
-		this.conn = conn;
-		MakeMenu(frame, defaults);
-	}
-	
-	
 	
 	private void MakeMenu(JFrame frame, String[] defaults) {
 		String getType = null;
